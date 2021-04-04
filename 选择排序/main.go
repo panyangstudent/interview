@@ -12,12 +12,10 @@ func main()  {
 }
 
 func selectSort(sortArr []int64,)  {
-	var i int
-	var j int
 	var temp int64
 	sortLen := len(sortArr)
-	for j = 0; j< sortLen; j++ {
-		for i = j + 1; i< sortLen; i++ {
+	for j := 0; j< sortLen; j++ {
+		for i := j + 1; i< sortLen; i++ {
 			if  sortArr[j] < sortArr[i] {
 				temp =  sortArr[i]
 				sortArr[i] =  sortArr[j]
@@ -25,6 +23,6 @@ func selectSort(sortArr []int64,)  {
 			}
 		}
 	}
-	fmt.Println("sortArr : %v",sortArr)
+	fmt.Println("sortArr : %v",sortArr)  
 	return
-}
+} 
