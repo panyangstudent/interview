@@ -1,4 +1,5 @@
 package main
+// 平均复杂度 O(n^2) 且稳定
 import (
 	"fmt"
 )
@@ -8,14 +9,11 @@ func main()  {
 }
 
 func insert(sortArr []int64)  {
-	var temp int64
 	arrLen := len(sortArr)
 	for i := 1; i < arrLen; i++ {
-		for j := i-1 ; j >= 0 ; j-- {
-			if sortArr[j] < sortArr[i]{
-				temp =  sortArr[i]
-				sortArr[i] =  sortArr[j]
-				sortArr[j] =  temp
+		for j := i+1 ; j > 0 ; j-- {
+			if sortArr[j] < sortArr[j-1]{
+				sortArr[j-1], sortArr[j] = sortArr[j], sortArr[j-1]
 			}
 		}
 	}
