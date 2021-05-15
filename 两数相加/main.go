@@ -1,6 +1,6 @@
 package main
 
-struct ListNode{
+type ListNode struct {
 	Value int64
 	Next *ListNode
 }
