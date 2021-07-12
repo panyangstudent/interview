@@ -1,6 +1,6 @@
 package main
 
-struct ListNode{
+type ListNode struct {
 	Value int64
 	Next *ListNode
 }
@@ -10,7 +10,7 @@ func main()  {
 }
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	var carry int64
+	// var carry int64
 	var sum int64
 	var newl1 *ListNode
 	var newl2 *ListNode
@@ -26,12 +26,12 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		}
 		newl1 = l1
 		newl2 = l2
-		sum = newl1.value + newl2.value
+		sum = newl1.Value + newl2.Value
 		if sum >= 10 {
-			carry = 1
+			// carry = 1
 			sum = sum % 10
 		} else {
-			carry = 0
+			// carry = 0
 		}
 		temp.Value = sum
 		
