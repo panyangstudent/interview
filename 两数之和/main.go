@@ -1,6 +1,6 @@
 package main
 import (
-    "fmt"
+	"fmt"
 )
 func main() {
     nums := []int{ 10,7,1, 3, 4, 6}
