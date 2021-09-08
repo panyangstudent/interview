@@ -42,3 +42,12 @@
 
 
     ![avatar](redis.png)
+
+    ![avater](网络事件处理器.png)
+
+## 流程
+1. 首先客户端请求建立连接，服务端进程初始化，请求连接到server socket，server socket触发了AE_READABLE事件，并指定了连接应答处理器，然后进入IO多路复用程序，将server socket压入队列，文件事件分派器拿到socket后，判断是由连接应答处理器消费处理该socket，连接应答处理器创建一个socket1，socket1从而与客户端socket建立通信；
+![avater](流程.png)
+2. 进行setValue操作，socket1接收到setValue命令后触发AE_READABLE事件，并指定了命令请求处理器，然后进入IO多路复用程序，将server socket压入队列，文件事件分派器拿到socket后，判断是由命令请求处理器消费处理该socket，命令请求处理器执行setValue命令，将socket1的AE_WRITABLE事件绑定命令回复处理器。客户端准备好获取结果，触发了socket1的AE_WRITABLE事件，然后进入IO多路复用程序，将socket1压入队列，文件事件分派器拿到socket后，判断是由命令请求处理器消费处理该socket，将socket1的操作命令执行结果，返回socket1，socket1再告知客户端。
+
+    ![avater](详细流程.png)
