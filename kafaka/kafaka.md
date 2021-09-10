@@ -29,7 +29,7 @@
 
 
     5）broker：一台kafka服务器就是一个broker，一个集群由很多broker组成。一个broker可以容纳多个topic     
-    6）partition：为了实现扩展性，一个非常大的topic可以分不到多个broker上，每个partition是一个有序的队列，partition中的每条消息都会被分配一个有序的id（offset）,将消息发给consumer，kafka只保证按一个partition中的消息的顺序，不保证一个topic的整体顺序（多个partition间）      
+    6）partition：为了实现扩展性，一个非常大的topic可以分到多个broker上，每个partition是一个有序的队列，partition中的每条消息都会被分配一个有序的id（offset）,将消息发给consumer，kafka只保证按一个partition中的消息的顺序，不保证一个topic的整体顺序（多个partition间）      
     7）offset：Offset 是消息在分区中的唯一标识，Kafka 通过它来保证消息在分区内的顺序性。
 5. 分区的目的？         
     * 分区对于kafka集群的好处：实现负载均衡
@@ -48,7 +48,7 @@
     > kafka的分区副本架构是kafka可靠性保证的核心，把消息写入多个副本可以使kafka在发生崩溃时仍能保证消息的持久性。
 
     * producer往broker发送消息      
-    > 如果我们要往 Kafka 对应的主题发送消息，我们需要通过 Producer 完成。前面我们讲过 Kafka 主题对应了多个分区，每个分区下面又对应了多个副本；为了让用户设置数据可靠性， Kafka 在 Producer 里面提供了消息确认机制。也就是说我们可以通过配置来决定消息发送到对应分区的几个副本才算消息发送成功。可以在定义 Producer 时通过 acks 参数指定（在 0.8.2.X 版本之前是通过 request.required.acks 参数设置的，详见 KAFKA-3043）。这个参数支持以下三种值：
+    > 如果我们要往 Kafka 对应的主题发送消息，我们需要通过 Producer 完成。前面我们讲过 Kafka topic对应了多个分区，每个分区下面又对应了多个副本；为了让用户设置数据可靠性， Kafka 在 Producer 里面提供了消息确认机制。也就是说我们可以通过配置来决定消息发送到对应分区的几个副本才算消息发送成功。可以在定义 Producer 时通过 acks 参数指定（在 0.8.2.X 版本之前是通过 request.required.acks 参数设置的，详见 KAFKA-3043）。这个参数支持以下三种值：
 
     > acks = 0：意味着如果生产者能够通过网络把消息发送出去，那么就认为消息已成功写入 Kafka 。在这种情况下还是有可能发生错误，比如发送的对象无能被序列化或者网卡发生故障，但如果是分区离线或整个集群长时间不可用，那就不会收到任何错误。在 acks=0 模式下的运行速度是非常快的（这就是为什么很多基准测试都是基于这个模式），你可以得到惊人的吞吐量和带宽利用率，不过如果选择了这种模式， 一定会丢失一些消息。
 
@@ -61,7 +61,7 @@
     * leader选举        
     > 再介绍leader选举之前，让我们先来了解一下 ISR（in-sync replicas）列表。每个分区的 leader 会维护一个 ISR 列表，ISR 列表里面就是 follower 副本的 Borker 编号，只有ISR里的成员才有被选为leader的可能。
 
-    > 所以当leader挂了，Kafka会从ISR列表中选择第一个 follower 作为新的 Leader，因为这个分区拥有最新的已经 committed 的消息。通过这个可以保证已经 committed 的消息的数据可靠性。
+    > 所以当leader挂了，Kafka会从ISR列表中选择第一个 follower 作为新的 Leader，因为这个分区拥有最新的已经 commited 的消息。通过这个可以保证已经 commited 的消息的数据可靠性。
 
     综上所述，为了保证数据的可靠性，我们最少需要配置一下几个参数：
     * producer 级别：acks=all（或者 request.required.acks=-1），同时发生模式为同步 producer.type=sync
@@ -76,12 +76,12 @@
 
     这样做的原因是还没有被足够多副本复制的消息被认为是“不安全”的，如果 Leader 发生崩溃，另一个副本成为新 Leader，那么这些消息很可能丢失了。如果我们允许消费者读取这些消息，可能就会破坏一致性。试想，一个消费者从当前 Leader（副本0） 读取并处理了 Message4，这个时候 Leader 挂掉了，选举了副本1为新的 Leader，这时候另一个消费者再去从新的 Leader 读取消息，发现这个消息其实并不存在，这就导致了数据不一致性问题。
 
-    当然，引入了 High Water Mark 机制，会导致 Broker 间的消息复制因为某些原因变慢，那么消息到达消费者的时间也会随之变长（因为我们会先等待消息复制完毕）。延迟时间可以通过参数 replica.lag.time.max.ms 参数配置，它指定了副本在复制消息时可被允许的最大延迟时间。
+    当然，引入了 High Water Mark机制，会导致 Broker 间的消息复制因为某些原因变慢，那么消息到达消费者的时间也会随之变长（因为我们会先等待消息复制完毕）。延迟时间可以通过参数 replica.lag.time.max.ms 参数配置，它指定了副本在复制消息时可被允许的最大延迟时间。
 
 9. 副本复制协议     
     kafka的topic中的每个分区都有一个预写日志，我们写入kafka的消息就存储在这里。这里的每条消息都有一个唯一的偏移量，用于标识他在当前分区日志中的位置。如下图
     ![avatar](log.jpeg)
-    kafka中的每个partition都被复制了n次，其中n是主体的复制因子。这允许kafka在集群服务器发生故障时自动切换到这些副本，以便再出现故障时消息仍然是可用的。kafka的肤质是以分区为粒度的，分区的预写日志背负知道了n个服务器上。 在 n 个副本中，一个副本作为 leader，其他副本成为 followers。顾名思义，producer 只能往 leader 分区上写数据（读也只能从 leader 分区上进行），followers 只按顺序从 leader 上复制日志。
+    kafka中的每个partition都被复制了n次，其中n是主体的复制因子。这允许kafka在集群服务器发生故障时自动切换到这些副本，以便再出现故障时消息仍然是可用的。kafka的复制是以分区为粒度的，分区的预写日志备份到了n个服务器上。 在 n 个副本中，一个副本作为 leader，其他副本成为 followers。顾名思义，producer 只能往 leader 分区上写数据（读也只能从 leader 分区上进行），followers 只按顺序从 leader 上复制日志。
 
 
 
@@ -103,7 +103,7 @@
 12. 数据传输的事务有几种？
 数据传输的事务定义通常有以下三种级别：     
 
-13. Kafka 消费者是否可以消费指定分区消息？
+13. Kafka消费者是否可以消费指定分区消息？
  kafka consumer消费消息的时候，向borker发出fetch请求去消费特定分区的消息，consumer指定消息在日志中的偏移量（offset），就可以消费从这个位置开始的消息，consumer拥有了offset的控制权，可向后回滚去重新消费之前的消息，
 
  14. Kafka消息是采用Pull模式，还是Push模式？    
@@ -141,9 +141,9 @@ Kafka是分布式消息系统，需要处理海量的消息，Kafka的设计是�
     * 记录下已处理过的请求标示，光有唯一标识还不够，这需要记录下那些请求是否已经处理过的，这样当收到新的请求时，用新请求中的标识和处理记录进行对比，如果处理记录中有同样的标示，表明重复，可以拒绝掉。
 
 
-* 为了实现producer的幂等性，kafka引入了producer Id(pid)和sequence number。
-* PId： 每个新的producer 在初始化的时候都会被分配一个唯一的pid，这个pid对用户不可见，
-* sequence number： 对于每个pid，该producer发送的数据的每个\<topic partition>都对应一个从0开始的单调递增的sequence number
+    * 为了实现producer的幂等性，kafka引入了producer Id(pid)和sequence number。
+    * PId： 每个新的producer 在初始化的时候都会被分配一个唯一的pid，这个pid对用户不可见，
+    * sequence number： 对于每个pid，该producer发送的数据的每个\<topic partition>都对应一个从0开始的单调递增的sequence number
 
 
     kafka可能存在多个生产者，会同时生产消息，但对kafka来说，只需要保证每个生产者内部的消息是幂等就可以了，所以引入了pid来标识不同的生产者
@@ -232,13 +232,13 @@ rebalance本质上是一组协议。group与coordinator共同使用这组协议�
 25. Rebalance流程   
     ![avatar](rebalance.png)
     目前rebalance主要分为两步：加入组和同步更新分配方案
-    * 加入组：  
+    * 加入组：
     1） 这一步中组内所有consumer（即group.id相同的所有consumer实例）向coordinator发生JoinGroup请求  
     2）当收集全JoinGroup请求后，coordinator从中选择一个consumer担任group的leader，并把所有成员信息以及它们的订阅信息发送给leader。  
     3）leader是某个consumer实例，coordinator通常是Kafka集群中的一个broker。另外leader负责整个group的所有成员制定分配方案。
     * 同步更新分配方案：        
     1）这一步中leader开始制定分配方案，即根据前面提到的分配策略决定每个consumer都负责哪些topic的哪些分区。
-    2） 一旦分配完成，leader会把这个分配方案封装进SyncGroup请求并发送给coordinator,在此过程中，每个组内成员都会发送SyncGroup请求,但是只有leader发送的SyncGroup请求中包含分配方案
+    2） 一旦分配完成，leader会把这个分配方案封装进SyncGroup请求并发送给coordinator,在此b过程中，每个组内成员都会发送SyncGroup请求,但是只有leader发送的SyncGroup请求中包含分配方案
     3） coordinator接收到分配方案后把属于每个consumer的方案单独抽取出来作为SyncGroup请求的response返还给各自的consumer。
 
 
@@ -246,3 +246,11 @@ rebalance本质上是一组协议。group与coordinator共同使用这组协议�
 类似于JVM中的generation,consumer设计了rebalance generation用于标识某次rebalance以更好地隔离每次rebalance上的数据。
 
 generation数值从0开始，每次rebalance后generation号会加1，可以用来保护consumer group,防止无效offset提交。例如，当上一届的consumer由于某种原因offset提交延时了，当rebalance后该consumer group生成了新一届的consumer group组成员，由于延迟的offset携带的是旧的generation信息，因此在提交时会被拒绝。此时日志会报ILLEGAL_GENERATION异常。
+
+
+27. kafka提交offset机制     
+    kafka对于offset的处理有两种提交方式：   
+    1）自动提交     
+    2）手动提交：   
+    * 同步提交: 同步模式下提交失败的时候一直尝试提交,消费者线程会一直阻塞，在broker对提交的请求作出响应之前，会一直阻塞直到偏移量提交操作成功
+    * 异步提交：异步手动提交offset时，消费者线程不会阻塞，提交失败的时候也不会进行重试，并且可以配合回调函数在broker做出响应的时候记录错误信息
