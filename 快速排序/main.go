@@ -13,57 +13,67 @@ func main()  {
 	fmt.Println("result is %v",sortArr)
 
 }
-func quickSort(sortArr *[]int, l int ,h int)  {
-	if l < h {
-		position := partition(sortArr,l ,h)
-		quickSort(sortArr,l, position-1)
-		quickSort(sortArr,position+1, h)
-	}
-}
-func partition(sortArr *[]int, l int ,h int)(left int){
-	if l > h {
-		return 0
-	}
-	fmt.Println("partition is %v ，%v", l, h)
-	value := (*sortArr)[l]
-	l++
-	for l < h {
-		if (*sortArr)[l] > value {
-			(*sortArr)[l], (*sortArr)[h] = (*sortArr)[h], (*sortArr)[l]
-			h--
-		}
+// func quickSort(sortArr *[]int, l int ,h int)  {
+// 	if l < h {
+// 		position := partition(sortArr,l ,h)
+// 		quickSort(sortArr,l, position-1)
+// 		quickSort(sortArr,position+1, h)
+// 	}
+// }
+// func partition(sortArr *[]int, l int ,h int)(left int){
+// 	if l > h {
+// 		return 0
+// 	}
+// 	fmt.Println("partition is %v ，%v", l, h)
+// 	value := (*sortArr)[l]
+// 	l++
+// 	for l < h {
+// 		if (*sortArr)[l] > value {
+// 			(*sortArr)[l], (*sortArr)[h] = (*sortArr)[h], (*sortArr)[l]
+// 			h--
+// 		}
 
-		if (*sortArr)[h] < value {
-			(*sortArr)[h], (*sortArr)[l] = (*sortArr)[l], (*sortArr)[h]
-			l++
-		}
-	}
-	(*sortArr)[l] = value
-	return l
-}
-
-// arr := strings.FieldsFunc(s,f func(rune) bool)
-
-
-// //划分
-// func partition(arr *[]int,left int,right int)int{
-// 	privot:=(*arr)[right]
-// 	i:=left-1
-// 	for j:=left;j<right;j++{
-// 		if (*arr)[j]<privot{
-// 			i++
-// 			(*arr)[i],(*arr)[j] = (*arr)[j],(*arr)[i]
+// 		if (*sortArr)[h] < value {
+// 			(*sortArr)[h], (*sortArr)[l] = (*sortArr)[l], (*sortArr)[h]
+// 			l++
 // 		}
 // 	}
-// 	(*arr)[i+1],(*arr)[right] = (*arr)[right],(*arr)[i+1]
-// 	return i+1
+// 	(*sortArr)[l] = value
+// 	return l
 // }
-// //递归
-// func QuickSort(arr *[]int,left int,right int){
-// 	if left>= right{
-// 		return
-// 	}
-// 	privot:=partition(arr,left,right)
-// 	QuickSort(arr,left,privot-1)
-// 	QuickSort(arr,privot+1,right)
-// }
+
+func partition(arr *[]int,left int,right int)int{
+	privot:=(*arr)[right]
+	i := left -1 
+	for j:=left;j<right;j++ {
+		if (*arr)[j] < privot {
+			i++
+			(*arr)[i],(*arr)[j]
+		}
+	}
+	(*arr)[i+1],(*arr)[right]
+	return i + 1
+}
+
+//划分
+func partition(arr *[]int,left int,right int)int{
+	privot:=(*arr)[right]
+	i:=left-1
+	for j:=left;j<right;j++{
+		if (*arr)[j]<privot{
+			i++
+			(*arr)[i],(*arr)[j] = (*arr)[j],(*arr)[i]
+		}
+	}
+	(*arr)[i+1],(*arr)[right] = (*arr)[right],(*arr)[i+1]
+	return i+1
+}
+//递归
+func QuickSort(arr *[]int,left int,right int){
+	if left>= right{
+		return
+	}
+	privot:=partition(arr,left,right)
+	QuickSort(arr,left,privot-1)
+	QuickSort(arr,privot+1,right)
+}
