@@ -11,7 +11,7 @@ import (
 )
 
 func main()  {
-	maxlen := lengthOfLongestSubstring("aabaab!bb")
+	maxlen := lengthOfLongestSubstringNew("aabaab!bb")
 	fmt.Println("maxlen is %v", maxlen)
 }
 func lengthOfLongestSubstring(s string) int {
@@ -42,4 +42,24 @@ func lengthOfLongestSubstring(s string) int {
 		}
 	}
 	return maxLen
+}
+
+
+func lengthOfLongestSubstringNew(s string) int {
+	charIndex := make(map[rune]int)
+	start, maxlength ,length := 0,0,0
+	for i, v :=range []rune(s) {
+		if lastIndex ,ok := charIndex[v]; ok && start <= lastIndex {
+			start = lastIndex + 1
+			length = i - start + 1
+		} else {
+			length += 1
+		}
+
+		charIndex[v] = i
+		if length > maxlength {
+			maxlength = length 
+		}
+	}
+	return maxlength
 }

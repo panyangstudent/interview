@@ -4,7 +4,7 @@ import "fmt"
 
 /*
 解题思路：
-1. 两个正序数组，设置两个游走指针，
+1. 两个正序数组，设置两个游走指针
  */
 func main() {
 	findMedianSortedArrays([]int{1,2},[]int{3,4})

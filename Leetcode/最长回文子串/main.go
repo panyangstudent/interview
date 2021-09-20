@@ -17,7 +17,7 @@ func main()  {
 	// 暴力解法
 	longestPalindrome("babad")
 	// 中心扩散法
-
+	
 	// Manacher算法
 }
 
@@ -44,4 +44,39 @@ func isPalindrome(s string) bool {
 		}
 	}
 	return true
+}
+
+func center(s string) string {
+	if len(s) < 2 {
+		return s
+	}
+	begin := 0
+	maxNum := 1
+    left := 0
+    right :=0 
+	for i :=0 ; i < len(s); i++ {
+		// 字符数为奇数
+		left = i - 1
+		right = i+1 
+		for right < len(s) && left >= 0 && s[left] == s[right] {
+			if right - left + 1 > maxNum {
+				begin = left
+				maxNum = right - left + 1
+			}
+			left--
+			right++ 
+		}
+		// 字符数为偶数
+		left = i 
+		right = i+1
+		for left >= 0 && right < len(s) && s[left] == s[right] {
+			if right - left + 1 > maxNum {
+				begin = left
+				maxNum = right - left + 1
+			}
+			left--
+			right++ 
+		}
+	}
+	return s[begin:begin+maxNum]
 }
