@@ -8,8 +8,8 @@ import (
 )
 
 func main()  {
-	sortArr := []int{1,23,4,5,67,45,23,11,34,56,23,12,14}
-	headSort(sortArr)
+	sortArr := []int64{1,23,4,5,67,45,23,11,34,56,23,12,14}
+	quickSort(sortArr,0,int64(len(sortArr)))
 	fmt.Println("result is %v",sortArr)
 
 }
@@ -31,70 +31,19 @@ func main()  {
 
 
 
-//  func quickSort(arr []int64, left int64, right int64) {
-// 	if left < right {
-// 		privot := arr[left]
-// 		j := left 
-// 		for i := left; i<right ; i++ {
-// 			if arr[i] < privot {
-// 				j++
-// 				arr[j],arr[i] = arr[i], arr[j]
-// 			}
-// 		}
-// 		arr[left],arr[j] = arr[j], arr[left]
-// 		quickSort(arr,left, j)
-// 		quickSort(arr, j+1,right)
-// 	}
-// } 
 
-
-
-func quickSort(num []int64, left int64, right int64) {
+func quickSort(arr []int64, left int64, right int64) {
 	if left < right {
-		privot := num[left] 
+		privote := arr[left]
 		j := left 
-		for i := left ; i< right ; i++ {
-			if num[i] < privot {
-				j++ 
-				num[j], num[i] = num[i], num[j]
+		for i := left; i< right; i++ {
+			if arr[i]<privote {
+				arr[j] ,arr[i] = arr[i],arr[j]
+				j++
 			}
 		}
-		num[j], num[left] = num[left], num[j]
-		quickSort(num, j+1, right)
-		quickSort(num, left, j)
-	}
-}
-
-func headSort (num []int) {
-	// 先从第一个非叶子结点构造堆
-	for i := len(num)/2 - 1; i >= 0 ; i-- {
-		adjestHeap(num, i, len(num))
-	} 
-	// 再次调整堆
-	for i:= len(num) - 1 ; i >= 0 ; i-- {
-		num[0], num[i] = num[i],num[0]
-		adjestHeap(num, 0, i)
-	}
-}
-
-func adjestHeap(num []int, pos int,length int) {
-	for {
-		// 计算孩子节点
-		child := pos * 2 + 1
-		if child >= length-1 {
-			return
-		}
-
-		// 孩子节点最大的
-		if num[child + 1] > num[child] {
-			child ++ 
-		}
-
-		if num[pos] < num[child] {
-			num[pos], num[child] = num[child], num[pos]
-			pos = child
-		} else {
-			break
-		}
+		arr[j], arr[left] = arr[left],arr[j]
+		quickSort(arr,left, j)
+		quickSort(arr,j+1,right)
 	}
 }

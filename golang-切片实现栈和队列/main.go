@@ -9,7 +9,8 @@ type Stack struct {
 }
 
 func NewStack() *Stack {
-	return new(Stack)
+	list := make([]interface{},0)
+	return &Stack{List: list}
 } 
 
 func (s *Stack) Push(data interface{})  {
