@@ -11,14 +11,11 @@ import "fmt"
 // 	暴力解法虽然时间复杂度比较高，但是胜在结构清晰。因为单个字符是回文字符串，所以左右相邻两个字符如果在相等的话，那这三个字符形成了一个回文字符串
 //	以此类推，在向两边扩散，如果还是相同的，则继续，同时记录。
 
-
-// Manacher算法思路：
 func main()  {
 	// 暴力解法
 	longestPalindrome("babad")
 	// 中心扩散法
-	
-	// Manacher算法
+	center("ssssdfdfdfd")
 }
 
 func longestPalindrome(s string) string {
@@ -46,6 +43,7 @@ func isPalindrome(s string) bool {
 	return true
 }
 
+// 中心扩散法
 func center(s string) string {
 	if len(s) < 2 {
 		return s
@@ -64,7 +62,7 @@ func center(s string) string {
 				maxNum = right - left + 1
 			}
 			left--
-			right++ 
+			right++
 		}
 		// 字符数为偶数
 		left = i 
