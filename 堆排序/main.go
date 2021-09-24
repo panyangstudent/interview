@@ -53,41 +53,6 @@ func main(){
 
 }
 
-
-
-// func heapSort (arr []int64) {
-// 	// 从第一个不是叶子节点开始构建堆
-// 	for i := int64(len(arr))/2 - 1; i>=0; i-- {
-// 		// 调整
-// 		adjustHeap(arr, i, int64(len(arr)))
-// 	}
-
-// 	// 从第一个节点开始构建
-// 	for i := int64(len(arr)) - 1; i>=0 ; i-- {
-// 		arr[0], arr[i] = arr[i], arr[0]
-// 		adjustHeap(arr, 0 ,i)
-// 	}
-// }
-// func adjustHeap(arr []int64,pos int64, length int64) {
-// 	for {
-// 		child := pos * 2 + 1
-// 		if child >= length - 1 {
-// 			break
-// 		}
-
-// 		if arr[child + 1] > arr[child] {
-// 			child ++ 
-// 		}
-
-// 		if arr[pos] < arr[child] {
-// 			arr[pos], arr[child] = arr[child], arr[pos]
-// 			pos = child
-// 		} else {
-// 			break
-// 		}
-// 	}
-// }
-
 func heapSort(arr []int64) {
 	//构建
 	for i := int64(len(arr))/2-1;i>=0;i-- {
@@ -106,7 +71,7 @@ func adjectHeap(arr []int64, pos int64, length int64) {
 
 		if child >= length-1 {
 			break
-		} 
+		}
 			
 		if arr[child] < arr[child+1] {
 			child++
@@ -118,6 +83,5 @@ func adjectHeap(arr []int64, pos int64, length int64) {
 		} else {
 			break
 		}
-
 	}
 }

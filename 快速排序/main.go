@@ -13,22 +13,6 @@ func main()  {
 	fmt.Println("result is %v",sortArr)
 
 }
-// func quickSort(arr []int, left, right int)  {
-// 	if left < right{
-// 	   pivot := arr[left]
-// 	   j := left
-// 	   for i := left; i < right; i++ {
-// 		  if arr[i] < pivot {
-// 			 j++
-// 			 arr[j], arr[i] = arr[i], arr[j]
-// 		  }
-// 	   }
-// 	   arr[left], arr[j] = arr[j], arr[left]
-// 	   quickSort(arr, left, j)
-// 	   quickSort(arr, j+1, right)
-// 	}
-//  }
-
 
 
 

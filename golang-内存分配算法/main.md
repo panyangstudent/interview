@@ -50,7 +50,7 @@ go的内存分配器主要包含以下几个核心组件：
         * mcache：mcache和tcmalloc中的threadcache类似，mcache保存的是各种大小的span，并按照span class分类，小对象直接从mcache分配，起到缓存作用，并且可以无锁访问       
         不同点：mcache与threadcache的不同点，tcmalloc中是每个线程1个threadcache，go中是每个P拥有1个mcache，因为在go程序中，当前最多拥有gomaxprocs个线程在用户态运行，所以最多需要gomaxprocs个mcache就可以保证各线程对mcache的无锁访问，线程的运行又是和p绑定的，把mcache交给p刚刚好
         * mcentral：mcentral与tcmalloc中的centralcache类似，是所有的线程共享的缓存，需要加锁访问，它按照span class对span分类，串联成链表，当mcache的某个级别span的内存被分配光时，他会向mcentral申请一个当前级别的span。    
-        不同点：centralcache是每个级别的span有一个链表，mcache是每个级别的span有两个链表。
+        不同点：centralcache是每个级别的span有一个链表，mcentral是每个级别的span有两个链表。
         * mheap：mheap与tcmalloc中的pageheap类似，他是堆内存的抽象，把从OS申请出得内存页组织成span，并保存起来。当mcentral的span不够用时会向mheap申请，mheap的span不够用时会向OS申请，向OS的申请是按照页来的，然后把申请来的内存页生成span组织起来，同时也需要加锁访问  
         不同点：mheap把span组织成了树结构，而不是链表，而且还是两颗树，然后把span分配到heapArena进行管理，它包含地址映射和span是否包含指针等位图，这样做的主要原因是为了保持高效的利用内存：分配，回收和再利用  
 
