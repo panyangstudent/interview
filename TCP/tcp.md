@@ -142,3 +142,8 @@ tcp的首部结构先是16位的源端口号和目标端口号，接着是32位�
     3）存储方式不同；cookie中只能保管ascll字符串，session中能够存储任何类型的数据       
     4）有效期上不同；cookie可以长期有效存在，session依赖名为 jsessionid cookie，过期时间默认为-1，只需关闭窗口该session就会过期     
     5）跨域支持上不同；cookie支持跨域名访问，session不支持跨域名访问
+
+22. 大量的time_wait        
+    * 出现的原因：高并发短链接的服务器上会出现这样的情况
+    * 导致的问题：在socket的time_wait状态结束之前，该socket占用的端口一直被占用
+    * 解决方式：调整系统的内核参数，允许time_wait的socket重新用于tcp链接，同时加快time_wait的socket的回收。更改短连接为长链接
