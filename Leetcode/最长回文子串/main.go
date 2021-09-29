@@ -65,7 +65,7 @@ func center(s string) string {
 			right++
 		}
 		// 字符数为偶数
-		left = i 
+		left = i
 		right = i+1
 		for left >= 0 && right < len(s) && s[left] == s[right] {
 			if right - left + 1 > maxNum {

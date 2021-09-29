@@ -22,7 +22,6 @@ func rob(nums []int) int {
         temp := currMax
         currMax, prevMax = max(prevMax + nums[i], currMax), temp
     }
-
     return currMax
 }
 
