@@ -5,42 +5,7 @@
 // 然后在调整a[:len(a)-2]为大顶堆
 // 重复上面的步骤，得到有序数组
 // 时间复杂度为nlog(n)
- 
 
-// func adjustHeap(a []int64，pos int64，length int64) {
-// 	for {
-// 		// 计算孩子位置, 如果超过则break
-// 		child := pos * 2 + 1
-// 		if child >= length - 1 {
-// 			break
-// 		} 
-// 		// 找出孩子中较大的那个
-// 		if a[child+1] > a[child] {
-// 			child ++ 
-// 		}
-// 		// 检查孩子是否大于父亲，如果大于则交换
-// 		if a[pos] < a[child] {
-// 		   a[pos],a[child] = a[child],a[pos]
-// 		   // 更新位置，指向子节点，把子节点的个个孩子都构建下， 这个pos只能不断在增大
-// 		   pos = child
-// 		} else {
-// 			// 如果子节点小于父节点，则停止调整
-// 			break
-// 		}
-// 	}
-// }
-// func buildHeap(a []int64){
-// 	// 从底层向上构建，len(a)/2-1是第一个非叶子节点， 这一步是为了构建一个堆
-// 	for i := len(a)/2-1; i>=0 ; i-- {
-// 		adjustHeap(a, i, len(a))
-// 	}
-
-// 	// 首尾交换，重新调整构建大顶堆，
-// 	for i := len(a) - 1 ; i >= 0; i -- {
-// 		a[0], a[i] = a[i], a[0]
-// 		adjustHeap(a, 0, i)
-// 	}
-// }
 package main
 import (
     "fmt"

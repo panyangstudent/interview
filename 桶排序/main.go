@@ -51,7 +51,7 @@ func main() {
 	nums := []int{45, 63, 3, 1, 29, 77, 20, 4, 30,120,233,3333,22222,222}  
 	fmt.Println("排序前：")  
 	fmt.Println(nums)  
-	nums = bucketSort(nums, 25)  
+	nums = bucketSort(nums, 20)  
 	fmt.Println("排序后：")  
 	fmt.Println(nums)
 }

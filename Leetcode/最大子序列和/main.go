@@ -11,7 +11,7 @@ import (
 func main() {
 	//	贪心算法
 	arr := []int{-2,1,-3,4,-1,2,1,-5,4}
-	fmt.Println("value is ： ", maxSubArr(arr))
+	fmt.Println("value is ： ", maxSubArrayKMP(arr))
 
 	//	动态规划	
 }
