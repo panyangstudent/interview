@@ -18,30 +18,30 @@ func main()  {
 	center("ssssdfdfdfd")
 }
 
-func longestPalindrome(s string) string {
-	if len(s) < 2 {
-		return s
-	}
-	maxLongestPalindrome := s[:1]
-	for i:=0; i < len(s)-1; i++ {
-		for j := i+1; j < len(s); j++  {
-			if isPalindrome(s[i:j+1]) && j-i+1 > len(maxLongestPalindrome) {
-				maxLongestPalindrome = s[i:j+1]
-			}
-		}
-	}
-	fmt.Printf("maxLongestPalindrome %v",maxLongestPalindrome)
-	return maxLongestPalindrome
-}
+// func longestPalindrome(s string) string {
+// 	if len(s) < 2 {
+// 		return s
+// 	}
+// 	maxLongestPalindrome := s[:1]
+// 	for i:=0; i < len(s)-1; i++ {
+// 		for j := i+1; j < len(s); j++  {
+// 			if isPalindrome(s[i:j+1]) && j-i+1 > len(maxLongestPalindrome) {
+// 				maxLongestPalindrome = s[i:j+1]
+// 			}
+// 		}
+// 	}
+// 	fmt.Printf("maxLongestPalindrome %v",maxLongestPalindrome)
+// 	return maxLongestPalindrome
+// }
 
-func isPalindrome(s string) bool {
-	for i := 0; i < len(s)/2; i++ {
-		if s[i] != s[len(s) - i -1] {
-			return false
-		}
-	}
-	return true
-}
+// func isPalindrome(s string) bool {
+// 	for i := 0; i < len(s)/2; i++ {
+// 		if s[i] != s[len(s) - i -1] {
+// 			return false
+// 		}
+// 	}
+// 	return true
+// }
 
 // 中心扩散法
 func center(s string) string {
@@ -52,11 +52,13 @@ func center(s string) string {
 	maxNum := 1
     left := 0
     right :=0 
+	num := 0
 	for i :=0 ; i < len(s); i++ {
 		// 字符数为奇数
 		left = i - 1
 		right = i+1 
 		for right < len(s) && left >= 0 && s[left] == s[right] {
+			num++ 
 			if right - left + 1 > maxNum {
 				begin = left
 				maxNum = right - left + 1
@@ -68,6 +70,7 @@ func center(s string) string {
 		left = i
 		right = i+1
 		for left >= 0 && right < len(s) && s[left] == s[right] {
+			num++ 
 			if right - left + 1 > maxNum {
 				begin = left
 				maxNum = right - left + 1
@@ -76,5 +79,5 @@ func center(s string) string {
 			right++ 
 		}
 	}
-	return s[begin:begin+maxNum]
+	return num
 }

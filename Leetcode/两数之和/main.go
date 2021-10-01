@@ -21,14 +21,3 @@ func twoSum(nums []int, target int) []int {
 }
 
 // 详细解说： https://juejin.cn/post/6937313943320952869
-
-func twoSum (nums []int64, target int64)(int64 int64){
-    numsMap := make([int64]int64)
-    for key, value := range nums {
-        value1 := target - value 
-        if _,ok = numsMap[value1];ok {
-            return value,nums[numsMap[value1]]
-        }
-        numsMap[value1] = key
-    }
-}
