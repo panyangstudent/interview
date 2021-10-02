@@ -50,21 +50,3 @@ func funcMax (int1 int, int2 int) int {
 	}
 	return int2
 }
-
-func maxChildStr(nums []int) {
-	dp := make([]int, len(nums))
-	max := 1
-
-	for i := 0; i< len(nums);i++ {
-		dp[i] = 1 
-		for j = i-1; j >= 0;j-- {
-			if num[i] > num[j] {
-				dp[i] = findMax(dp[j]+1,dp[i])
-			}
-		}
-		if max < dp[i] {
-			max = dp[i]
-		}
-	}
-	return max
-}
