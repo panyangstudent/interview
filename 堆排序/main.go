@@ -11,7 +11,7 @@ import (
     "fmt"
 )
 func main(){
-	num := []int64{98, 48, 777, 63, 57, 433, 23, 1112, 1}
+	num := []int64{1,2,3,4,5,6}
 	heapSort(num)
 	
 	fmt.Println("heap sort over:", num)
@@ -20,11 +20,14 @@ func main(){
 
 func heapSort(arr []int64) {
 	//构建
-	for i := int64(len(arr))/2-1;i>=0;i-- {
+	for i := int64(len(arr))/2;i>=0;i-- {
 		adjectHeap(arr, i, int64(len(arr)))
 	}
 	// 调整
-	for i := int64(len(arr)) -1 ; i >= 0 ; i-- {
+	for i := int64(len(arr)) -1 ; i > 0 ; i-- {
+		if arr[i] > arr[0] {
+			continue
+		}
 		arr[0],arr[i] = arr[i],arr[0]
 		adjectHeap(arr, 0, i)
 	}
