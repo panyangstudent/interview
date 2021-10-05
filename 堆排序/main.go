@@ -11,7 +11,7 @@ import (
     "fmt"
 )
 func main(){
-	num := []int64{1,2,3,4,5,6}
+	num := []int64{1,7,2,3,4,5,6}
 	heapSort(num)
 	
 	fmt.Println("heap sort over:", num)
@@ -19,32 +19,30 @@ func main(){
 }
 
 func heapSort(arr []int64) {
-	//构建
-	for i := int64(len(arr))/2;i>=0;i-- {
-		adjectHeap(arr, i, int64(len(arr)))
+	// 构建
+	for i := int64(len(arr))/2-1;i>=0;i-- {
+		adjestHeap(arr, i, int64(len(arr)))
 	}
-	// 调整
-	for i := int64(len(arr)) -1 ; i > 0 ; i-- {
+
+	// 重新构建
+	for i := int64(len(arr)) - 1 ; i > 0 ; i-- {
 		if arr[i] > arr[0] {
 			continue
 		}
-		arr[0],arr[i] = arr[i],arr[0]
-		adjectHeap(arr, 0, i)
+		arr[0], arr[i] = arr[i],arr[0]
+		adjestHeap(arr, 0, i)
 	}
 }
 
-func adjectHeap(arr []int64, pos int64, length int64) {
+func adjestHeap(arr []int64, pos int64, length int64) {
 	for {
-		child := pos * 2 + 1
-
+		child := pos * 2 + 1 
 		if child >= length-1 {
 			break
 		}
-			
-		if arr[child] < arr[child+1] {
+		if arr[child+1] > arr[child]{
 			child++
 		}
-
 		if arr[pos] < arr[child] {
 			arr[pos], arr[child] = arr[child], arr[pos]
 			pos = child
@@ -53,3 +51,38 @@ func adjectHeap(arr []int64, pos int64, length int64) {
 		}
 	}
 }
+// func heapSort(arr []int64) {
+// 	//构建
+// 	for i := int64(len(arr))/2;i>=0;i-- {
+// 		adjectHeap(arr, i, int64(len(arr)))
+// 	}
+// 	// 调整
+// 	for i := int64(len(arr)) -1 ; i > 0 ; i-- {
+// 		if arr[i] > arr[0] {
+// 			continue
+// 		}
+// 		arr[0],arr[i] = arr[i],arr[0]
+// 		adjectHeap(arr, 0, i)
+// 	}
+// }
+
+// func adjectHeap(arr []int64, pos int64, length int64) {
+// 	for {
+// 		child := pos * 2 + 1
+
+// 		if child >= length-1 {
+// 			break
+// 		}
+			
+// 		if arr[child] < arr[child+1] {
+// 			child++
+// 		}
+
+// 		if arr[pos] < arr[child] {
+// 			arr[pos], arr[child] = arr[child], arr[pos]
+// 			pos = child
+// 		} else {
+// 			break
+// 		}
+// 	}
+// }

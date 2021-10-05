@@ -14,18 +14,35 @@ func main()  {
 	fmt.Println("result is %v",sortArr)
 	fmt.Println(strings.Replace("https:/io","/","\\\\/",-1))
 }
-func quickSort(arr []int64, left int64, right int64) {
+// func quickSort(arr []int64, left int64, right int64) {
+// 	if left < right {
+// 		privote := arr[left]
+// 		j := left 
+// 		for i := left; i< right; i++ {
+// 			if arr[i] < privote {
+// 				j++
+// 				arr[j] ,arr[i] = arr[i],arr[j]
+// 			}
+// 		}
+// 		arr[j], arr[left] = arr[left],arr[j]
+// 		quickSort(arr,left, j)
+// 		quickSort(arr,j+1,right)
+// 	}
+// }
+
+
+func quickSort(arr []int64, left int64, right int64){
 	if left < right {
 		privote := arr[left]
 		j := left 
-		for i := left; i< right; i++ {
+		for i := left;i<right;i++ {
 			if arr[i] < privote {
 				j++
-				arr[j] ,arr[i] = arr[i],arr[j]
+				arr[i],arr[j] = arr[j], arr[i]
 			}
 		}
-		arr[j], arr[left] = arr[left],arr[j]
-		quickSort(arr,left, j)
-		quickSort(arr,j+1,right)
+		arr[left], arr[j] = arr[j], arr[left]
+		quickSort(arr, left, j)
+		quickSort(arr, j+1, right)
 	}
 }

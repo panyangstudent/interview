@@ -2,8 +2,7 @@ package main
 import (
 	"fmt"
 )
-// goalng实现栈
-
+// goalng实现栈 先进后出
 type Stack struct {
 	List []interface{}
 }
@@ -61,9 +60,7 @@ func main(){
 	stack.Print()
     fmt.Println(que1,que2,que3)
 }
-// golang实现队列
-
-
+// golang实现队列 先进先出
 type Queue struct {
 	List []interface{}
 }

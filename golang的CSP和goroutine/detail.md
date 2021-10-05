@@ -76,6 +76,7 @@ channel通道在使用的时候，需要注意以下几点：
        recvx    uint   // 接收的goroutine在buf中的位置
        recvq    waitq  // 等待读取的goroutine队列
        sendq    waitq  // 等待写入的goroutine队列
+    }
     ```
     ![avater](channel.awebp)
 

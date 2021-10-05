@@ -18,6 +18,7 @@ func quickSort(nums []int, start, end int) []int {
 	}  
 	return nums
 }
+
 func bucketSort(nums []int, bucketSize int) []int {
 	minValue := nums[0]
 	maxValue := nums[0]
