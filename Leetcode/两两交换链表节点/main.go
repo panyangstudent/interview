@@ -13,8 +13,6 @@ func swapPairs(head *ListNode) *ListNode {
 	newHead.Next = head
 	return newHead
 }
-
-
 // 迭代
 func swapPairs(head *ListNode) *ListNode {
 	dummy := &ListNode{}

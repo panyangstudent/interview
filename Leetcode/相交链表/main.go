@@ -26,7 +26,5 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	}
 	return a
 }	
-// 时间复杂度为O(n), 空间复杂度为O(1)
-func getIntersectionNode(headA, headB *ListNode) *ListNode {
-	
-}	
+
+

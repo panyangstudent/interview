@@ -19,7 +19,6 @@ func check(p, q *TreeNode) bool {
     return p.Val == q.Val && check(p.Left, q.Right) && check(p.Right, q.Left) 
 }
 
-
 // 迭代
 func isSymmetric(root *TreeNode) bool {
     u, v := root, root

@@ -1,7 +1,7 @@
 package main
 
 
-// 追赶法 
+// 追赶法-遍历追赶-使用双指针游走
 func middleNode(head *ListNode) *ListNode {
 	slow, fast := head, head
 	for fast.Next != nil && fast.Next.Next != nil {

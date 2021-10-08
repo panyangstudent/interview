@@ -10,7 +10,6 @@ type TreeNode struct {
 	Right *TreeNode
 }
 // 深度遍历
-
 func maxDepth(root *TreeNode) int {
     if root == nil {
         return 0

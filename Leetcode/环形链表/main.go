@@ -21,7 +21,6 @@ func hasCycle(head *ListNode) bool {
 	return false
 }
 
-
 // 哈希表
 
 func hasCycle(head *ListNode) bool {

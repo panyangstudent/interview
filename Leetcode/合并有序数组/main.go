@@ -8,7 +8,7 @@ func main() {
 	merge([]int{1,2,3,0,0,0}, 3,[]int{2,5,6},3)
 }
 
-// 实现时间复杂度为噢O(m+n)
+// 实现时间复杂度为O(m+n)
 func merge(nums1 []int, m int, nums2 []int, n int)  {
 	newnums := make([]int,0)
 	left ,right := 0,0

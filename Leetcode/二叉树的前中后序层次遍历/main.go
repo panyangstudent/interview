@@ -15,11 +15,10 @@ func preorderTraversal(root *TreeNode) []int {
 	}
 	res := make([]int, 0)
 	res = append(res, root.Val)
-	preorderTraversal(root.Left)
-	preorderTraversal(root.right)
+	res = append(res, preorderTraversal(root.Left)...)
+	res = append(res, preorderTraversal(root.Right)...)
 	return res
 }
-
 // 中序遍历
 func inorderTraversal(root *TreeNode) []int {
 	if root == nil {
