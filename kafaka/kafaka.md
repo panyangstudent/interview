@@ -209,13 +209,15 @@ Rebalance本质上是一种协议，规定了consumer group下的所有consumer 
 Rebalance 的触发条件有三种：
     * 组成员发生新的变化（新的consumer加入，已有 Consumer 主动离开组或已有 Consumer 崩溃了——这两者的区别后面会谈到， 崩溃并不一定是指consumer进程挂了或者所在机器宕机了，而是kafka长时间没有收到consumer的心跳上报）
     * 订阅数发生变更
-    * 订阅主题的分区数发生变更
-如何进行组内分区分配： 
-    * Kafka 默认提供了两种分配策略：Range 和 Round-Robin。当然 Kafka 采用了可插拔式的分配策略，你可以创建自己的分配器以实现不同的分配策略。
-    * range的分配策略主要是基于范围的思想，他将单个topic的分区按照顺序排列，然后把这些分区划分成固定的大小的分区段并依次分配给每个consumer
-    * round-robin策略则会把所有topic的所有分区顺序摆开，然后轮询式地分配给各个consumer。
-    * sticky策略：实现目标为分区的分配尽可能的均匀，分配给消费者的分区数最多相差一个，另外，在此基础上，尽可能保持分区的分配与上次分配的保持相同    
-    * 通常意义上认为，如果group下所有consumer实例的订阅是相同的，那么使用round-robin会带来更公平的分配方案，否则使用range策略的效果更好。
+    * 订阅主题的分区数发生变更  
+
+如何进行组内分区分配：   
+
+        * Kafka 默认提供了两种分配策略：Range 和 Round-Robin。当然 Kafka 采用了可插拔式的分配策略，你可以创建自己的分配器以实现不同的分配策略。
+        * range的分配策略主要是基于范围的思想，他将单个topic的分区按照顺序排列，然后把这些分区划分成固定的大小的分区段并依次分配给每个consumer
+        * round-robin策略则会把所有topic的所有分区顺序摆开，然后轮询式地分配给各个consumer。
+        * sticky策略：实现目标为分区的分配尽可能的均匀，分配给消费者的分区数最多相差一个，另外，在此基础上，尽可能保持分区的分配与上次分配的保持相同    
+        * 通常意义上认为，如果group下所有consumer实例的订阅是相同的，那么使用round-robin会带来更公平的分配方案，否则使用range策略的效果更好。
 
 24. Rebalance协议   
 rebalance本质上是一组协议。group与coordinator共同使用这组协议完成group的rebalance。

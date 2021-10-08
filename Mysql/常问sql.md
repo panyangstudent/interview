@@ -51,7 +51,6 @@
     dense_rank() over (order by 成绩 desc) as dese_rank,
     row_number() over (order by 成绩 desc) as row_num
     from 班级;
-
     ```
     举个例子，如上sql，结果如下：
     ![avater](窗口函数.png)
