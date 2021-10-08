@@ -2,7 +2,7 @@ package main
 import (
 	"fmt"
 )
-// 解题思路 ：	
+// 解题思路 ：回溯法 + 深度遍历	
 // 1. 目标是找到矩阵中的岛屿的数量，上下左右相连的1都被认为是连续岛屿
 // 2. dfs方法：设目前指针指向一个岛屿中某一点(i,j),寻找包括此点的岛屿边界
 //		* 从（i，j）向此点的上下左右 (i+1,j),(i-1,j),(i,j+1),(i,j-1) 做深度搜索
@@ -32,29 +32,4 @@ func dfs(grid [][]byte, i, j int) {
 	dfs(grid, i-1, j)
 	dfs(grid, i, j-1)
 	dfs(grid, i, j+1)
-}
-
-
-func  func1(grid [][]byte) int {
-	count := 0 
-	for i := 0; i< len(grid); i++ {
-		for j:=0 ;j<len(grid[0]);j++ {
-			if grid[i][j] == '1' {
-				dfs(grid, i ,j)
-				count++
-			}
-		}
-	}
-	return count
-}
-
-func dfs(grid [][]byte, i, j int) {
-	if (i<0 || j<0)|| i > len(grid) || j > len(grid[0]) || grid[i][j] == '0'  {
-		return
-	}
-	grid[i][j] = '0'
-	dfs(grid,i+1,j)
-	dfs(grid,i,j+1)
-	dfs(grid,i,j-1)
-	dfs(grid,i-1,j)
 }

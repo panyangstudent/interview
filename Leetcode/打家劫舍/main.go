@@ -11,6 +11,7 @@ package main
 import (
 	"fmt"
 )
+
 func main() {
 	fmt.Println("max is : ",rob([]int{1,2,3,4,5,6}))
 }
