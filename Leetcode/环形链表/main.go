@@ -18,7 +18,7 @@ func hasCycle(head *ListNode) bool {
 		slow = slow.Next
 		fast = fast.Next.Next
 	}
-	return false
+	return true
 }
 
 // 哈希表

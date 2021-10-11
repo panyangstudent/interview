@@ -61,3 +61,5 @@ func backTracking(s string, path []string, startIndex int, res *[]string) {
 		path = path[:len(path)-1]
 	} 
 }
+
+func backtrack(s ) 

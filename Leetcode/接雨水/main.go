@@ -14,6 +14,16 @@ func main() {
 	fmt.Printf("res is ",trap(height))
 }
 
+func trap(height []int) int{
+	s := make([]int, 0)
+	var ret int
+	for i, h := range height {
+		for len(s) > 0 && height[s[len(s)-1]] < h {
+			top : s[len(s) - 1]
+		}  
+	}
+}
+
 func trap(height []int) int {
 	s := make([]int,0)
 	var ret int

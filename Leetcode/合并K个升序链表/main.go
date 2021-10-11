@@ -69,8 +69,6 @@ func merge2list(list1,list2 *ListNode) *ListNode{
 }
 
 
-
-
 func mergeKLists(lists []*ListNode) *ListNode {
 	ln := len(lists)
 	if ln == 0 {

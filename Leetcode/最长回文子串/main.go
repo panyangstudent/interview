@@ -52,13 +52,11 @@ func center(s string) string {
 	maxNum := 1
     left := 0
     right :=0 
-	num := 0
 	for i :=0 ; i < len(s); i++ {
 		// 字符数为奇数
 		left = i - 1
 		right = i+1 
 		for right < len(s) && left >= 0 && s[left] == s[right] {
-			num++ 
 			if right - left + 1 > maxNum {
 				begin = left
 				maxNum = right - left + 1
@@ -70,7 +68,6 @@ func center(s string) string {
 		left = i
 		right = i+1
 		for left >= 0 && right < len(s) && s[left] == s[right] {
-			num++ 
 			if right - left + 1 > maxNum {
 				begin = left
 				maxNum = right - left + 1
@@ -79,5 +76,5 @@ func center(s string) string {
 			right++ 
 		}
 	}
-	return num
+	return s[begin:begin+maxNum]
 }

@@ -12,7 +12,7 @@ func candy(ratings []int) int {
 		mapArr[i] = 1
 		if i - 1 >= 0 && ratings[i] > ratings[i-1] && mapArr[i] <= mapArr[i-1]{
 			mapArr[i] = mapArr[i-1] + 1
-		} 
+		}
 	}
 	// 左规则
 	for i:= len(ratings) -2;i>=0;i-- {

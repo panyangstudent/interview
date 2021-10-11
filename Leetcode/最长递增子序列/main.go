@@ -29,7 +29,7 @@ func main() {
 func maxChildStr(nums []int) int {
 	dp := make([]int, len(nums),len(nums))
 	max := 1
-	 for i := 0; i < len(nums); i++ {
+	for i := 0; i < len(nums); i++ {
 		 dp[i] = 1
 		for j := i-1; j>=0 ; j -- {
 			if nums[i] > nums[j] {
@@ -39,8 +39,8 @@ func maxChildStr(nums []int) int {
 		if max < dp[i] {
 			max = dp[i]
 		}
-	 } 
-	 return max
+	}
+	return max
 }
 
 
