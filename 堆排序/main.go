@@ -51,38 +51,3 @@ func adjestHeap(arr []int64, pos int64, length int64) {
 		}
 	}
 }
-// func heapSort(arr []int64) {
-// 	//构建
-// 	for i := int64(len(arr))/2;i>=0;i-- {
-// 		adjectHeap(arr, i, int64(len(arr)))
-// 	}
-// 	// 调整
-// 	for i := int64(len(arr)) -1 ; i > 0 ; i-- {
-// 		if arr[i] > arr[0] {
-// 			continue
-// 		}
-// 		arr[0],arr[i] = arr[i],arr[0]
-// 		adjectHeap(arr, 0, i)
-// 	}
-// }
-
-// func adjectHeap(arr []int64, pos int64, length int64) {
-// 	for {
-// 		child := pos * 2 + 1
-
-// 		if child >= length-1 {
-// 			break
-// 		}
-			
-// 		if arr[child] < arr[child+1] {
-// 			child++
-// 		}
-
-// 		if arr[pos] < arr[child] {
-// 			arr[pos], arr[child] = arr[child], arr[pos]
-// 			pos = child
-// 		} else {
-// 			break
-// 		}
-// 	}
-// }
