@@ -25,3 +25,4 @@ func insertSort(sortArr []int64) {
 	fmt.Println("insert %v",sortArr)
 	return
 }
+

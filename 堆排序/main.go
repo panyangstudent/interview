@@ -11,7 +11,7 @@ import (
     "fmt"
 )
 func main(){
-	num := []int64{1,7,2,3,4,5,6}
+	num := []int64{2,33,4,55,6,77,34,25,67,87,24,12,23,45,68,60,1,2,3}
 	heapSort(num)
 	
 	fmt.Println("heap sort over:", num)

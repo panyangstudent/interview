@@ -7,26 +7,25 @@ import (
 	"fmt"
 )
 func main()  {
-	sortArr := []int64{1,23,4,5,67,45,23,11,34,56,23,12,14}
-	res := mergerSort(sortArr)
+	sortArr := []int{1,23,4,5,67,45,23,11,34,56,23,12,14}
+	res := mergeSort(sortArr)
 	fmt.Println(res)
 }
 
-func mergerSort(arr []int64) []int64 {
+func mergeSort(arr []int) []int {
     if len(arr) <= 1 {
         return arr
     }
-    m := len(arr) /2 
-    left := mergerSort(arr[:m])
-    right := mergerSort(arr[m:])
+    mid := len(arr) / 2 
+    left := mergeSort(arr[:mid])
+    right := mergeSort(arr[mid:])
     return merge(left, right)
 }
-func merge(left []int64, right []int64) []int64{
-    lindex , rindex := 0,0
-    llen := len(left)
-    rLen := len(right)
-    res := make([]int64,0)
-    for lindex <llen && rindex < rLen {
+func merge(left ,right []int) []int {
+    rindex, lindex := 0,0
+    llen, rlen := len(left), len(right)
+    res := make([]int, 0)
+    for rindex < rlen && lindex < llen {
         if left[lindex] < right[rindex] {
             res = append(res, left[lindex])
             lindex++
@@ -35,11 +34,11 @@ func merge(left []int64, right []int64) []int64{
             rindex++
         }
     }
-    if rindex < rLen {
-        res = append(res,right[rindex:]...)
+    if lindex == llen {
+        res = append(res, right[rindex:]...)
     }
-    if lindex < llen {
-        res = append(res,left[lindex:]...)
+    if rindex == rlen {
+        res = append(res, left[lindex:]...)
     }
     return res
 }
