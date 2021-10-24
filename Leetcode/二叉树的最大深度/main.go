@@ -24,6 +24,7 @@ func max(a, b int) int {
     return b
 }
 
+// 层次遍历
 func check(root []*TreeNode) int {
 	if len (root) == 0 {
 		return 0

@@ -20,7 +20,6 @@ import (
 // 遍历会议curInterval：
 //		1. 如果curInterval开始时间大于最小堆的堆顶， 即已申请的会议室最小结束时间， 则不需要申请会议室，将堆顶替换为当前遍历的会议结束时间 重新堆排序
 // 		2. 如果curInterval开始时间小于最小堆的堆顶即 已申请会议室的最小结束时间，则需要申请一个新的会议室，将当前会议的结束时间加入堆中 重新排序
-
 func minMeetingRooms(intervals [][]int) int {
 	// 按照会议的开始时间来排序
 	sort.Slice(intervals , func(i, j int) bool {
@@ -46,7 +45,7 @@ func minMeetingRooms(intervals [][]int) int {
 func minMeetingRoomsBuildHeap(nums []int) {
 	size := len(nums) 
 	for i := size/2 - 1; i>=0 ; i-- {
-		minMeetingRoomsHeapBody(nums, size, i)
+		minMeetingRoomsHeapBody(nums, i, size)
 	} 
 
 	for i := size -1 ; i > 0 ; i-- {
@@ -59,7 +58,7 @@ func minMeetingRoomsBuildHeap(nums []int) {
 
 }
 
-func minMeetingRoomsHeapBody(nums []int, size, curRoot int) {
+func minMeetingRoomsHeapBody(nums []int, curRoot, size int) {
 	for {
 		child := curRoot * 2 + 1
 		if child >= size-1 {

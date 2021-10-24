@@ -25,6 +25,7 @@ type ListNode struct {
 	Val int
 	Next *ListNode 
 }
+
 // 分治+优先队列
 func mergeKLists(lists []*ListNode) *ListNode {
 	ln := len(lists)

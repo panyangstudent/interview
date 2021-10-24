@@ -42,24 +42,3 @@ func isNormalIp(s string,startIndex,end int) bool {
 	} 
 	return true
 }
-
-
-
-func backTracking(s string, path []string, startIndex int, res *[]string) {
-	//终止条件
-	if startIndex ==  len(s) && len(path) == 4 {
-		tempIpString := path[0] + "." + path[1] + "." + path[2] + "." + path[3] 
-		*res = append(*res,tempIpString)
-	}
-	for i := startIndex; i< len(s); i++ {
-		path := append(path,s[startIndex:i+1])
-		if i-startIndex+1 <= 3 && len(path) <= 4 && isNormalIp(s, startIndex, i) {
-			backTracking(s, path, i+1, res)
-		} else {
-			return
-		}
-		path = path[:len(path)-1]
-	} 
-}
-
-func backtrack(s ) 

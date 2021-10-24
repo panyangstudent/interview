@@ -4,6 +4,10 @@ var (
     dirs = [][]int{[]int{-1, 0}, []int{1, 0}, []int{0, -1}, []int{0, 1}}
     rows, columns int
 )
+
+
+
+
 func longestIncreasingPath(matrix [][]int) int {
 	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return 0 

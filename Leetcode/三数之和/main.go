@@ -28,7 +28,7 @@ func threeSum(nums []int) [][]int {
 			}
 			// 需要保证right一直在secon的右侧
 			for second < right && nums[second] + nums[right] > target {
-				right-- 
+				right--
 			}
 			// 元素重叠了，停止
 			if second == right {
@@ -43,18 +43,3 @@ func threeSum(nums []int) [][]int {
 	}
 	return ans
 }
-// func quickSort(arr []int, left int, right int) {
-// 	if left < right {
-// 		privote := arr[left]
-// 		j := left 
-// 		for i := left; i< right; i++ {
-// 			if arr[i]<privote {
-// 				j++
-// 				arr[j] ,arr[i] = arr[i],arr[j]
-// 			}
-// 		}
-// 		arr[j], arr[left] = arr[left],arr[j]
-// 		quickSort(arr,left, j)
-// 		quickSort(arr,j+1,right)
-// 	}
-// }

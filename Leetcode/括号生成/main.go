@@ -15,6 +15,8 @@ import (
 //		* 构建出一个用尽n对括号的合法括号串
 //		* 意味着，当构建的长度达到2*n，就可以结束递归
 
+
+
 func generateParenthesis(n int) []string {
     res := []string{}
 
