@@ -32,7 +32,6 @@ func inorderTraversal(root *TreeNode) []int {
 }
 
 // 后序遍历
-
 func postorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
