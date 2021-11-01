@@ -26,7 +26,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	l1Len,l2Len := len(l1Arr),len(l2Arr)
     flag := true
 	carry := 0
-	for i := 0; ;i++ {ßß
+	for i := 0; ;i++ {
 		a,b := 0,0
 		if i < l1Len {
 			a = l1Arr[l1Len - i - 1]

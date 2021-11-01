@@ -13,48 +13,31 @@ func main() {
 	height := []int{0,1,0,2,1,0,1,3,2,1,2,1}
 	fmt.Printf("res is ",trap(height))
 }
-func trap(height []int) int {
-	s := make(int[],0)
-	for  i, h := range height {
-		for len(s) > 0 && height[s[len(s)-1]] < h {
-			top := s[len(s) -1]
-			s := s[:len(s)-1]
-			if len(s) == 0 {
-				break
-			}
-			t := s[len(s)-1]
-			W := i-t-1
-			h := min(height[t], h)
-		}
-		s = append(s, i)
-	}
-}
-
 
 
 func trap(height []int) int {
 	s := make([]int,0)
-	var ret int
-	for i, h :=range height {
-		for len(s) > 0 && height[s[len(s)-1]] < h {
-			top :=  s[len(s)-1]
-			s = s[:len(s)-1]
-			if len(s) == 0 {
-				break
-			}
-			
-			t :=  s[len(s)-1]
-			W := i-t-1 
-			H := min(height[t], h) - height[top]
-			ret += W * H
-		} 
-		s = append(s, i)
-	}
-	return ret
+   var ret int
+   for i, h :=range height {
+	   for len(s) > 0 && height[s[len(s)-1]] < h {
+		   top :=  s[len(s)-1]
+		   s = s[:len(s)-1]
+		   if len(s) == 0 {
+			   break
+		   }
+		   
+		   t :=  s[len(s)-1]
+		   W := i-t-1 
+		   H := min(height[t], h) - height[top]
+		   ret += W * H
+	   } 
+	   s = append(s, i)
+   }
+   return ret
 }
 func min(a, b int) int {
-	if a < b {
-		return a
-	} 
-	return b
+   if a < b {
+	   return a
+   } 
+   return b
 }

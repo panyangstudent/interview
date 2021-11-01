@@ -77,3 +77,24 @@ func minMeetingRoomsHeapBody(nums []int, curRoot, size int) {
 		}
 	}
 }
+
+func minMeetingRooms(intervals [][]int) int {
+	sort.Slice(intervals, func (a,b int) bool {
+		return intervals[a][0] < intervals[b][0]
+	})
+
+	heap := make([]int, 0)// 用来存放结束时间
+	for i :=0; i< len(intervals); i++ {
+		if len(heap) == 0 {
+			heap = append(heap, intervals[i])
+		} else {
+			if heap[0] > intervals[i][0]  {
+				heap = append(heap, intervals[i][1])
+			}  else {
+				heap[0] = intervals[i][1]
+			}			
+			minMeetingRoomsBuildHeap(heap)
+		}
+	}
+	return len(heap)	
+}

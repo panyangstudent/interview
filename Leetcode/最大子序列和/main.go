@@ -54,3 +54,7 @@ func maxSubArrayKMP(nums []int) int{
 	}
 	return max_sum
 }
+
+func maxSubArr() {
+	
+}

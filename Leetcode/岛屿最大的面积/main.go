@@ -25,7 +25,7 @@ func check(grid [][]int, i, j int) int {
 		return 0
 	}
 	res := 1
-	grid[i][j] == 0
+	grid[i][j] = 0
 	res += check(grid, i-1, j) 
 	res += check(grid, i+1, j) 
 	res += check(grid, i, j-1) 
