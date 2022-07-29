@@ -34,7 +34,7 @@ func heapSort(arr []int64) {
 	}
 }
 
-func adjestHeap(arr []int64, pos int64, length int64) {
+func c(arr []int64, pos int64, length int64) {
 	for {
 		child := pos * 2 + 1 
 		if child >= length-1 {
