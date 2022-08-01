@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"math"
 )
 
 // 动规五部曲分析如下：
@@ -54,7 +54,7 @@ func min(a, b int) int {
 }
 
 // 版本二，先遍历背包，在遍历物品
-func coinChangev2(coins []int, amount int) int {
+func coinChangev2(conis []int, amount int) int {
 	dp := make([]int,amount+1)
 	dp[0] = 0 
 	for j:=1;j <= amount; j++ {

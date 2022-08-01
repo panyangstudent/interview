@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+    "strings"
 )
 
 func convert(s string, numRows int) string {

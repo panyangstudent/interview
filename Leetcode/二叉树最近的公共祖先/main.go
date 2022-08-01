@@ -1,9 +1,10 @@
 package main
 
-import (
-	"fmt"
-)
-
+type TreeNode struct {
+    Val int64
+    Left *TreeNode
+    Right *TreeNode
+}
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 	if root == nil {
         return nil
