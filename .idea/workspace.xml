@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(一)基本概念.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(二)服务寻址.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(四)网络传输.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(一).md" beforeDir="false" afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(一).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grpc/Grpc底层原理剖析(一).md" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/Grpc底层原理剖析(一).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(一).md" beforeDir="false" afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(三)序列化和反序列化.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
