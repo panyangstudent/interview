@@ -86,6 +86,7 @@ TServer在thrift框架中的主要任务是接收client的请求
    * TNonblockingServer：单线程服务器端，使用非阻塞式IO
    * THsHaServer：半同步半异步服务器端，基于非阻塞式IO读写和多线程工作任务处理
    * TThreadedSelectorServer：多线程选择服务器端，对THsHaServer在异步IO模型上进行增强
+
 对于golang来说，只有TSimpleServer服务模式，并且是非阻塞的
 
 # TProcessor(服务端)
