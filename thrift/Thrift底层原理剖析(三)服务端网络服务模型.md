@@ -231,7 +231,7 @@ func (p *TSimpleServer) processRequests(client TTransport) (err error) {
         if atomic.LoadInt32(&p.closed) != 0 {
             return nil
         }
-		// 设置resp的
+		// 设置respde上下文
         ctx := SetResponseHelper(
             defaultCtx,
             TResponseHelper{
@@ -272,11 +272,14 @@ func (p *TSimpleServer) processRequests(client TTransport) (err error) {
 
 // processor.Process的具体实现
 func (p *SimpleServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	// 获取请求的方法名
     name, _, seqId, err2 := iprot.ReadMessageBegin(ctx)
     if err2 != nil { return false, thrift.WrapTException(err2) }
+	// 真正处理请求的方法，先看当前TProcessor(这里是SimpleServiceProcessor)的processorMap是否包含当前请求的调用方法
     if processor, ok := p.GetProcessorFunction(name); ok {
         return processor.Process(ctx, seqId, iprot, oprot)
     }
+	//不存在报错返回
     iprot.Skip(ctx, thrift.STRUCT)
     iprot.ReadMessageEnd(ctx)
     x24 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
@@ -287,4 +290,118 @@ func (p *SimpleServiceProcessor) Process(ctx context.Context, iprot, oprot thrif
     return false, x24
 
 }
+
+func (p *simpleServiceProcessorAdd) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+    args := SimpleServiceAddArgs{}
+    var err2 error
+	// 从对应的传输协议中获取请求参数，根据编号进行读取
+    if err2 = args.Read(ctx, iprot); err2 != nil {
+        iprot.ReadMessageEnd(ctx)
+        x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err2.Error())
+        oprot.WriteMessageBegin(ctx, "add", thrift.EXCEPTION, seqId)
+        x.Write(ctx, oprot)
+        oprot.WriteMessageEnd(ctx)
+        oprot.Flush(ctx)
+        return false, thrift.WrapTException(err2)
+    }
+    iprot.ReadMessageEnd(ctx)
+    
+    tickerCancel := func() {}
+    // 开始一个协程来进行服务器链接检测
+	// ServerConnectivityCheckInterval被定义为一个TProcessorFunc实现中连接检查使用的定时器间隔，他是一个变量而不是常量
+    if thrift.ServerConnectivityCheckInterval > 0 {
+        var cancel context.CancelFunc
+        ctx, cancel = context.WithCancel(ctx)
+        defer cancel()
+        var tickerCtx context.Context
+        tickerCtx, tickerCancel = context.WithCancel(context.Background())
+        defer tickerCancel()
+        go func(ctx context.Context, cancel context.CancelFunc) {
+        ticker := time.NewTicker(thrift.ServerConnectivityCheckInterval)
+        defer ticker.Stop()
+        for {
+            select {
+                case <-ctx.Done():
+                    return
+                case <-ticker.C:
+                    if !iprot.Transport().IsOpen() {
+                        cancel()
+                        return
+                    }
+                }
+            }
+        }(tickerCtx, cancel)
+    }
+    // 初始化返回的struct
+    result := SimpleServiceAddResult{}
+    var retval int32
+	// 调用handler业务层的Add方法
+    if retval, err2 = p.handler.Add(ctx, args.Num1, args.Num2); err2 != nil {
+        tickerCancel()
+        if err2 == thrift.ErrAbandonRequest {
+            return false, thrift.WrapTException(err2)
+        }
+        x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing add: " + err2.Error())
+        oprot.WriteMessageBegin(ctx, "add", thrift.EXCEPTION, seqId)
+        x.Write(ctx, oprot)
+        oprot.WriteMessageEnd(ctx)
+        oprot.Flush(ctx)
+        return true, thrift.WrapTException(err2)
+    } else {
+        result.Success = &retval
+    }
+    tickerCancel()
+    if err2 = oprot.WriteMessageBegin(ctx, "add", thrift.REPLY, seqId); err2 != nil {
+        err = thrift.WrapTException(err2)
+    }
+	// 将业务处理结果写入到outputProtocol
+    if err2 = result.Write(ctx, oprot); err == nil && err2 != nil {
+        err = thrift.WrapTException(err2)
+    }
+    if err2 = oprot.WriteMessageEnd(ctx); err == nil && err2 != nil {
+        err = thrift.WrapTException(err2)
+    }
+    if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+        err = thrift.WrapTException(err2)
+    }
+    if err != nil {
+        return
+    }
+    return true, err
+}
+
+func (p *SimpleServiceAddResult) Write(ctx context.Context, oprot thrift.TProtocol) error {
+    if err := oprot.WriteStructBegin(ctx, "add_result"); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) 
+	}
+    if p != nil {
+		// 根据返回的序号填入返回值
+        if err := p.writeField0(ctx, oprot); err != nil { return err }
+    }
+    if err := oprot.WriteFieldStop(ctx); err != nil {
+        return thrift.PrependError("write field stop error: ", err) 
+	}
+    if err := oprot.WriteStructEnd(ctx); err != nil {
+        return thrift.PrependError("write struct stop error: ", err) 
+	}
+    return nil
+}
+
+func (p *SimpleServiceAddResult) writeField0(ctx context.Context, oprot thrift.TProtocol) (err error) {
+	// 因为thrift的输入或者返回参数都是指针类型，所以IsSetSuccess，这里需要判断当前返回的result的各项参数指针是否为nil。
+	// 如果返回参数未赋值，则其只是初始化，则对应的变量为nil
+    if p.IsSetSuccess() {
+        if err := oprot.WriteFieldBegin(ctx, "success", thrift.I32, 0); err != nil {
+            return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) 
+        }
+        if err := oprot.WriteI32(ctx, int32(*p.Success)); err != nil {
+            return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) 
+        }
+        if err := oprot.WriteFieldEnd(ctx); err != nil {
+            return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) 
+        }
+    }
+    return err
+}
 ```
+所以综上所述，我们可以看到golang在实现非阻塞TSimpleServer时，是通过innerAccept方法中的协程来实现的。
