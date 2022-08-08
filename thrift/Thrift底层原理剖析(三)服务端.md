@@ -76,7 +76,6 @@ TServerSocket是TServerTransport的一个具体实现，TServerSocket结构体�
 type TTransportFactory interface {
 	GetTransport(trans TTransport) (TTransport, error)
 }
-
 type tTransportFactory struct{}
 
 ```
