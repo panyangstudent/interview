@@ -1,10 +1,40 @@
-
+# 服务端处理流程
+![avater](图片/thrift-服务端.jpg)
 # 网络服务模型
 Thrift提供的网络服务模型：单线程，多线程，事件驱动，从另一角度划分：阻塞服务类型，非阻塞服务类型
 阻塞服务类型：TSimpleServer，TThreadPoolServer
 非阻塞服务类型：TNonblockingServer， THsHaServer和TThreadedSelectorServer
 ![avater](图片/TServer.png)
 上图这些都是TServer的具体实现,但是在golang只有TSimpleServer的网络服务模型.
+下面我们看下一个完整的请求所经历的处理流程
+# 请求
+```go
+
+func SimpleServer() {
+	conf := &thrift.TConfiguration{
+		ConnectTimeout: time.Second,
+		SocketTimeout:  time.Second,
+		MaxFrameSize: 1024 * 256,
+		TBinaryStrictRead:  thrift.BoolPtr(true), // 读input协议，二进制
+		TBinaryStrictWrite: thrift.BoolPtr(true), // 写output协议，二进制
+	}
+    
+	// 初始化传输协议为二进制传输
+	protocolFactory := thrift.NewTBinaryProtocolFactoryConf(conf)
+	// 确定数据传输方式，这里返回一个tTransportFactory工厂interface
+	transportFactory := thrift.NewTTransportFactory()
+    
+	// 初始化监听地址，以及端口等
+	transport, _ := thrift.NewTServerSocket(":8090")
+    // 初始化TProcessor核心处理对象，golang这里初始化的是SimpleServiceProcessor， 包含当前server下的所有业务方法，和一个方法名map
+	processor := Sample.NewSimpleServiceProcessor(&handler.SimpleServiceHandler{})
+	// 初始化一个TServer的实现子类，确定服务端网络模型，这里为TSimpleServer
+	server := thrift.NewTSimpleServer4(processor,transport,transportFactory,protocolFactory)
+	// 启动服务端
+	server.Serve()
+}
+```
+这是我在demo代码仓库中的一个例子，main函数会调用当前这个方法，来启动服务端，上述具体的代码含义我会在下面讲解
 # TServerTransport(服务传输器)
 ```go
 type TServerTransport interface {
