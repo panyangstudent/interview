@@ -2,7 +2,7 @@ thrift版本：v0.14.2
 # 基本概念
 我们都知道rpc(Remote Procedure Call，远程过程调用)，是一个计算机通信协议，此协议允许进程间通信。简单来说就是，当A机器上的进程调用B机器上的进程时，A机器上的调用进程会被挂起，而B机器上的进程开始执行。
 调用方将参数信息传送给被调用方，然后可以通过被调用方的结果得到返回。rpc可以不依赖应用层协议，直接给予rpc进行远程调用，在传输层就可以完成通信。由于rpc调用方式依赖客户端与服务端之间建立Socket连接来实现二
-进制通信，底层会比较复杂，所以一些rpc框架就应运而生。 市面上目前主流的关于rpc协议实现有grpc，thrift等。而这些rpc框架一般来说都需要解决服务寻址，数据流的序列化和反序列化，网络传输这三个主要问题。
+进制通信，底层会比较复杂，所以一些rpc框架就应运而生。 市面上目前主流的关于rpc协议实现有grpc，thrift,dubbo。而这些rpc框架一般来说都需要解决服务寻址，数据流的序列化和反序列化，网络传输这三个主要问题。
 
 # rpc调用的基本流程
 ![avater](图片/img.png)
@@ -20,7 +20,7 @@ thrift版本：v0.14.2
 
 # http和rpc
 http和rpc其实不是对立面，我们知道rpc只是一个计算机通信协议框架，通信协议只是其中的一部分。而http协议作为网络七层模型中应用层的协议，他的主要职责是解决如何包装数据。http协议是建立在传输层tcp协议之上，而传输层的tcp协议主要来解决数据传输问题，
-但是对于上层应用开发极其不友好，所以就存在了http协议。 除此之外还有常见的socket，socket是针对TCP或UDP的具体接口实现，提供了在传输层进行网络编程的方法。所以对于rpc的具体实现grpc和thrift来说，grpc的底层实现是http2
+但是对于上层应用开发极其不友好，所以就存在了http协议。 除此之外还有常见的socket，socket是针对TCP或UDP的具体接口实现，提供了在传输层进行网络编程的方法。对于rpc的具体实现grpc和thrift来说，grpc的底层实现是http2
 协议，而thrift的底层实现是tcp协议。因此我们可以认为http和rpc协议是活跃在应用层的网络协议，他们处于同一层级，互相独立且交织。
 
 # thrift架构
@@ -96,6 +96,9 @@ TServer在thrift框架中的主要任务是接收client的请求
 ThriftClient跟TProcessor一样主要操作inputProtocol和outputProtocol，不同的是thrift将rpc调用分为send和receive两个步骤：
 * send步骤，将用户的调用参数作为一个整体的struct写入TProtocol，并发送到TServer。
 * send结束后，thriftClient便立即进入receive状态等待TServer的响应。对于TServer的响应，使用返回值解析类惊醒返回值解析，完成rpc调用
+
+# thrift各个元素之间的关系
+
 
 # TSimpleServer的服务模式
 这不是一个典型的TSimpleServer，因为它在接受套接字后不会阻塞。 它更像一个TThreadServer，可以处理不同的连接在不同的goroutines。 如果golang用户实现了一个conn-pool一样的东西在客户端，这将有效。
