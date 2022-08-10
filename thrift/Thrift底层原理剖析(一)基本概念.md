@@ -60,15 +60,16 @@ Tprotocol用来对数据进行序列化与反序列化，具体方法包括二�
    * exception：异常类型
 
 # 传输通信协议(TProtocol)
-Thrift可以让用户选择客户端和服务端之间传输通信协议的区别，在传输协议上总体分为二进制(binary)和文本传输协议，一般情况都会选择二进制，来节省带宽，提高传输效率。
+Protocol用于对数据格式抽象，在rpc调用时序列化请求和响应。thrift可以让用户选择客户端和服务端之间传输通信协议的区别，在传输协议上总体分为二进制(binary)和文本传输协议，一般情况都会选择二进制，来节省带宽，提高传输效率。
    * TBinaryProtocol：二进制编码格式进行数据传输
    * TCompactProtocol：高效率的，密集的二进制编码格式进行数据传输
    * TJSONProtocol：使用JSON的数据编码协议进行数据传输
    * TSimpleJSONProtocol：只提供json只写的协议，适用于通过脚本语言解析
 
 
-# thrift的数据传输方式(TTransport)
-TTransport是与底层数据传输紧密相关的传输层。在这一层，数据是按照字节流处理的，把这些字节按照顺序进行发送和接收，并且不会关心数据是什么类型。数据类型的解析是TProtocol这一层
+# thrift的数据传输方式(Transport)
+Transport网络读写抽象，Transport的接口包括：open，close，read，write，flush，isOpen，readAll。Server端需要ServerTransport，用于接收客户端连接接口包括：listen, accept, close，Interrupt
+是与底层数据传输紧密相关的传输层。在这一层，数据是按照字节流处理的，把这些字节按照顺序进行发送和接收，并且不会关心数据是什么类型。数据类型的解析是TProtocol这一层
    * TSocket：使用阻塞式IO进行传输
    * THttpTransport：采用http协议进行数据传输
    * TNonblockingTransport：使用非阻塞方式，用于构建异步客户端
@@ -127,27 +128,9 @@ TProcessor的实现主要是各个IDL的server生成的，上面是demo代码中
 handler是具体的挂载SimpleService业务处理接口的一个struct
 
 # ThriftClient(客户端)
-ThriftClient跟TProcessor一样主要操作inputProtocol和outputProtocol，不同的是thrift将rpc调用分为send和receive两个步骤：
+ThriftClient跟TProcessor一样主要操作inputProtocol和outputProtocol，不同的是thrift将客户端rpc调用分为send和receive两个步骤：
 * send步骤，将用户的调用参数作为一个整体的struct写入TProtocol，并发送到TServer(这里也就是Socket)。
-* send结束后，thriftClient便立即进入receive状态等待TServer的响应。对于TServer的响应，使用返回值解析类惊醒返回值解析，完成rpc调用
+* send结束后，thriftClient便立即进入receive状态等待TServer的响应。对于TServer的响应，使用返回值解析类进行返回值序列化，完成rpc调用
 
-
-# TSimpleServer的服务模式
-这不是一个典型的TSimpleServer，因为它在接受套接字后不会阻塞。 它更像一个TThreadServer，可以处理不同的连接在不同的goroutines。 如果golang用户实现了一个conn-pool一样的东西在客户端，这将有效。
-```go
-type TSimpleServer struct {
-   closed int32
-   wg     sync.WaitGroup
-   mu     sync.Mutex
-   
-   processorFactory       TProcessorFactory
-   serverTransport        TServerTransport
-   inputTransportFactory  TTransportFactory
-   outputTransportFactory TTransportFactory
-   inputProtocolFactory   TProtocolFactory
-   outputProtocolFactory  TProtocolFactory
-   // THeaderProtocol中自动转发的报头
-   forwardHeaders []string
-   logger Logger
-}
-```
+# 总结
+thrift的用法实际上很简单，定义好IDL，然后实现Server对应的handler(方法名，参数列表与接口定义一致接口)，最后选择各个组件。需要选择的包括：Transport(一般是socket，如果十分需要才会选择buffed和framed)，Protocol，Server
