@@ -300,6 +300,8 @@ func (p *TSimpleServer) processRequests(client TTransport) (err error) {
 }
 
 // processor.Process的具体实现
+// TServer接收到rpc请求之后，调用TProcessor进行处理，TProcessor首先调用TTransport.readMessageBegin接口读出rpc调用的名称和rpc调用类型。紧接着调用GetProcessorFunction方法根据rpc调用名称，到自己的processMap中查找对应的rpc处理函数。
+// 如果存在对应的rpc处理函数，则调用该处理函数，进行请求响应。不存在则抛出异常。
 func (p *SimpleServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
 	// 获取请求的方法名
     name, _, seqId, err2 := iprot.ReadMessageBegin(ctx)
@@ -434,3 +436,40 @@ func (p *SimpleServiceAddResult) writeField0(ctx context.Context, oprot thrift.T
 }
 ```
 所以综上所述，我们可以看到golang在实现非阻塞TSimpleServer时，是通过innerAccept方法中的协程来实现的。
+
+# 服务端stop
+```go
+func (p *TSimpleServer) Stop() error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if atomic.LoadInt32(&p.closed) != 0 {
+		return nil
+	}
+	atomic.StoreInt32(&p.closed, 1)
+	p.serverTransport.Interrupt()
+	p.wg.Wait()
+	return nil
+}
+func (p *TServerSocket) Close() error {
+   var err error
+   p.mu.Lock()
+   if p.IsListening() {
+      err = p.listener.Close()
+      p.listener = nil
+   }
+   p.mu.Unlock()
+   return err
+}
+
+func (p *TServerSocket) Interrupt() error {
+   p.mu.Lock()
+   p.interrupted = true
+   p.mu.Unlock()
+   p.Close()
+   
+   return nil
+}
+
+```
+
+代码比较简单，可以看出从内存中获取p.closed，如果不为0 ，则表示已经关闭。如果为0，则更新当前closed的值为1，表示已关闭。同时读取Interrupt，并且关闭监听。
