@@ -6,10 +6,39 @@ Thrift提供的网络服务模型：单线程，多线程，事件驱动，从�
 非阻塞服务类型：TNonblockingServer， THsHaServer和TThreadedSelectorServer
 ![avater](图片/TServer.png)
 上图这些都是TServer的具体实现,但是在golang只有TSimpleServer的网络服务模型.
-下面我们看下一个完整的请求所经历的处理流程
-# 请求
-```go
+下面我们看下一个完整的请求所经历的服务端处理流程
 
+# 服务端Server代码
+server端IDL
+```thrift
+include "User.thrift"
+namespace go Sample
+
+typedef map<string, string> Data
+
+struct Response {
+    1:required i32 errCode; //错误码
+    2:required string errMsg; //错误信息
+    3:required Data data;
+}
+
+//定义服务
+service Greeter {
+    Response SayHello(
+        1:required User.User user
+    )
+
+    Response GetUser(
+        1:required i32 uid
+    )
+}
+
+service SimpleService {
+    i32 add(1:i32 num1, 2:string num2)
+}
+```
+请求样例
+```go
 func SimpleServer() {
 	conf := &thrift.TConfiguration{
 		ConnectTimeout: time.Second,
