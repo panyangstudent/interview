@@ -1,5 +1,36 @@
 # 客户端请求流程
+![avater](图片/thrift-客户端.jpg)
+# 客户端请求实现
 ```go
+func SimpleClient()  {
+    var transport thrift.TTransport
+	// 建立一个socket链接
+    transport,  _ = thrift.NewTSocketConf("localhost:8090", &thrift.TConfiguration{
+        ConnectTimeout: time.Second,
+        SocketTimeout:  time.Second,
+    })
+	// 初始化一个配置
+    conf := &thrift.TConfiguration{
+        MaxFrameSize:       1024*256,
+        ConnectTimeout:     time.Second,
+        SocketTimeout:      time.Second,
+        TBinaryStrictRead:  thrift.BoolPtr(true),
+        TBinaryStrictWrite: thrift.BoolPtr(true),
+    }
+	// 传输协议
+    protocolFactory := thrift.NewTBinaryProtocolFactoryConf(conf)
+	// 传输方法
+    transportFactory := thrift.NewTTransportFactory()
+    transport, _ = transportFactory.GetTransport(transport)
+    defer transport.Close()
+    transport.Open()
+	// 初始化输入，输出的传输方式
+    iprot := protocolFactory.GetProtocol(transport)
+    oprot := protocolFactory.GetProtocol(transport)
+    handleClient(Sample.NewSimpleServiceClient(thrift.NewTStandardClient(iprot, oprot)))
+}
+
+
 // 初始化一个client，调用client的Add方法
 func handleClient(client *Sample.SimpleServiceClient) {
 	ctx := context.TODO()

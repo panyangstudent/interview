@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(五)序列化原理.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thrift/图片/thrift-客户端.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thrift/图片/thrift调用流程.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(一)基本概念.md" beforeDir="false" afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(一)基本概念.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(二)客户端.md" beforeDir="false" afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(二)客户端.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(四)客户端-连接池.md.go" beforeDir="false" afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(四)客户端-连接池.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thrift/图片/thrift-服务端.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

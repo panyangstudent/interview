@@ -29,6 +29,8 @@ http和rpc其实不是对立面，我们知道rpc只是一个计算机通信协�
 是thrift根据IDL(接口描述文件)生成的客户端和服务端代码，包括数据的读写部分，对应于rpc调用的基本流程中的client stub和server stub。
 Tprotocol用来对数据进行序列化与反序列化，具体方法包括二进制，json或者apache thrift定义的格式。TTransport提供数据数据传输功能
 
+# thrift调用流程 
+![img.png](图片/thrift调用流程.png)
 # thrift特性
 1. 开发速度快
    编写thrift IDL文件，利用编译器自动生成服务端骨架(skeletons)和客户端桩(stubs)，省去了开发者自定义和维护接口编解码，消息传输，服务器多线程模型等基础工作。
@@ -109,11 +111,19 @@ TServer的定义是一个interface，其中定义了几个方法，作用如下�
 TServer在thrift框架中的主要任务是接收client的请求，其具体实现有以下几个：
    * TSimpleServer：单线程服务器端，使用标准的阻塞式IO
    * TThreadPoolServer：多线程服务器端，使用标准的阻塞式IO
-   * TNonblockingServer：单线程服务器端，使用非阻塞式IO
+   * TNonblockingServer：单线程服务器端，使用非阻塞式IO（单线程非阻塞 NIO）
    * THsHaServer：半同步半异步服务器端，基于非阻塞式IO读写和多线程工作任务处理
    * TThreadedSelectorServer：多线程选择服务器端，对THsHaServer在异步IO模型上进行增强
 
 对于golang来说，只有TSimpleServer服务模式，并且是非阻塞的，至于非阻塞怎么实现的我们后面再讲。
+
+各个模式TServer的优缺点
+   * TSimpleServer：循环监听新请求的到来并处理完对应的请求，是个单线程模型。由于一次只能处理一个socket链接，效率比较低。
+   * TThreadPoolServer：不支持并发和多连接的问题，所以引入了线程池，但仍然是多线程阻塞模式，线程池采用的线程数可伸缩的模式，线程池中的队列采用同步队列。
+     ThreadPoolServer拆分了监听线程(accept)和处理客户端连接的工作线程(worker), 监听线程每接到一个客户端, 就投给线程池去处理。 
+     * 优点：适合服务端能够预知到多少个客户端并发的情况，这时每个处理都可以被业务线程池处理，性能非常高。 
+     * 缺点：受限于线程池大小，如果并发请求超过了线程池大小，新请求只能等待。
+   * TNonblockingServer：
 
 # TProcessor(服务端)
 主要是对Tserver中一次请求的inputProtocol和outputProtocol进行操作，也就是从inputProtocol中读取的client请求数据，向outputProtocol写入用户逻辑的返回值。
