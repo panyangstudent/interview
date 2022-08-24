@@ -89,4 +89,9 @@ struct的编码，一个struct就是多个field编码而成，最后一个field�
 thrift序列化的时候并没有将字段名序列化进去，所以在idl文件中更改字段名是没有任何影响的。因为客户端和服务端使用的是同一个IDL文件，所以在对应的时候可以根据Sequence ID进行对应
 
 # Transport
+基于帧传输和不基于帧传输是在二进制协议的情况下谈的，文本协议不谈这个。
+
+早期，thrift使用的是不基于帧的传输，在这种情况下，处理器是直接想socket中读写数据。之后，thrift引入了基于帧的传输(FramedTransport)：client/server会首先在内存中缓存完整的请求/响应，
+当将request struct/response struct的最后一个字节缓存完成之后，会计算该消息的长度，然后向socket中写入该长度(4字节有符号整数)，接着写入消息实际内容。长度前缀+消息内容就组成了一个帧
+(frame)。基于帧的传输主要是为了简化异步处理器的实现。
 
