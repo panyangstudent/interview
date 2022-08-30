@@ -55,7 +55,7 @@ Struct装的是thrift通信的实际参数，一个Struct由许多基本类型�
 | []byte| binary  | 4+N      |        |
 | list  | list    | 1+4+N    |  15    |
 | set   | set     | 1+4+N    |  14    |
-| field |         | 1+2+X    |  3     |
+| field |         | 1+2+X    |  13     |
 | struct| struct  | N * X    |  12    |
 | enum  |         |          |        |
 | union |         |          |        |
@@ -95,3 +95,34 @@ thrift序列化的时候并没有将字段名序列化进去，所以在idl文�
 当将request struct/response struct的最后一个字节缓存完成之后，会计算该消息的长度，然后向socket中写入该长度(4字节有符号整数)，接着写入消息实际内容。长度前缀+消息内容就组成了一个帧
 (frame)。基于帧的传输主要是为了简化异步处理器的实现。
 
+
+## 客户端具体实现
+![img.png](图片/img_6.png)
+关于golang的客户端序列化以及socket发送信息，主要是上述三个方法的底层实现。
+### WriteMessageBegin(TBinaryProtocol)
+![img_1.png](图片/img_7.png)
+上图方法开始先判断二进制协议对象TBinaryProtocol是否包含对应的写配置
+如果包含则写入版本号，方法名，序列号等，我们看下这块是如何写入的，以WriteI32为例。
+
+* WriteI32
+  ```go
+  func (p *TBinaryProtocol) WriteI32(ctx context.Context, value int32) error {
+      v := p.buffer[0:4]
+      binary.BigEndian.PutUint32(v, uint32(value))
+      _, e := p.trans.Write(v)
+      return NewTProtocolException(e)
+  }
+
+  func (bigEndian) PutUint32(b []byte, v uint32) {
+    _ = b[3] // early bounds check to guarantee safety of writes below
+    b[0] = byte(v >> 24)
+    b[1] = byte(v >> 16)
+	b[2] = byte(v >> 8)
+    b[3] = byte(v)
+  }
+  ```
+  每个二进制协议对象都有一个64字节的buffer，
+
+
+
+## 服务端具体实现
