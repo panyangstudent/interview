@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Socket/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Socket/文件描述符&amp;socket连接.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mysql/block-nested-loop-join.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mysql/index-nested-loop-join.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mysql/join原理.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mysql/simple-loop-join.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/thrift/interview.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树的最大深度/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树的最大深度/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(五)序列化原理.md" beforeDir="false" afterPath="$PROJECT_DIR$/thrift/Thrift底层原理剖析(五)序列化原理.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql/Mysql索引.md" beforeDir="false" afterPath="$PROJECT_DIR$/mysql/Mysql索引.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,6 +124,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/mysql/image" />
       <recent name="$PROJECT_DIR$/mysql" />
       <recent name="$PROJECT_DIR$/thrift/图片" />
       <recent name="$PROJECT_DIR$/排序算法" />
