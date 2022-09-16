@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 type TreeNode struct {
 	Val int
 	Left *TreeNode
@@ -23,6 +19,7 @@ func max(a, b int) int {
     }
     return b
 }
+
 
 // 层次遍历
 func check(root []*TreeNode) int {
