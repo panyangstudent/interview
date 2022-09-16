@@ -47,11 +47,11 @@
 
 
 ## B-tree
-![avatar](b-tree.png)  
+![avatar](image/b-tree.png)  
     B-tree每个节点最多可以有d个分支(叉)，d称为B-tree的度，如上图所示，他的每个节点可以有4个元素，5个元素，于是他的度为5.b-tree中的元素是有序，正式满足有序的关系，才能高效的查找；首先冲根节点进行二分查找，找到就返回对应的值，否则进入相应的区间节点递归查找，直到找到对应的元素或找到null指针，找到nill指针表示失败。这个查找十分高效，其时间复杂度为O(logN)（以d为低，当d很大时，树的高度就很低），因为每次检索最多只需要检索书高h个节点
 
 ## B+tree
-![avatar](2015032710000561.png)  
+![avatar](image/2015032710000561.png)  
 ### Myisam引擎的索引结构
 1. myisam引擎的索引结构为B+tree，其中B+tree的数据域存储的内容为实际数据的地址，也就是说他的索引和实际的数据是分开的，只不过是用索引指向了实际的数据，这种索引就是所谓的非聚簇索引
 
@@ -71,8 +71,8 @@
 
     其中id为主索引，name为辅助索引
 
-    ![avatar](数据.png) 
-    ![avatar](索引.png) 
+    ![avatar](image/数据.png) 
+    ![avatar](image/索引.png) 
     
     聚簇索引的优势在哪？    
     1）由于行数据和叶子节点存储在一起，这样主键和行数据是一起被载入内存的，找到叶子节点就可以立刻将数据返回了，如果按照主键id来组织数据，获得数据更快。 
@@ -80,25 +80,25 @@
 
 4. page结构 
     page是整个innodb存储的最基本构件，也是innodb磁盘管理的最小单位，与数据库相关的所有内容都存储在这种page结构中。page分为好几种类型。常见的有数据页(b-tree node)，undo页(Undo log Page)，系统页(system page)，事务数据页(transaction system  page)等。单个page的大小是16k，每个page使用一个32位的int值来唯一标识，这也正好对应innodb最大64TB的存储容量（16kb * 2^32 = 64tb）
-    ![avatar](page.png) 
+    ![avatar](image/page.png) 
 
     每个page都有通用的头和尾，但是中部的内容根据page的类型不同而发生变化。page的头部信息如下：
-    ![avatar](page头部.png) 
+    ![avatar](image/page头部.png) 
     page的头部保存了两个指针，分别指向前一个page和后一个page，头部还有page的类型信息和用来唯一标示page的编号。根据这两个指针我们知道page链接起来就是一个双向链表的结构。
-    ![avatar](page行.png) 
+    ![avatar](image/page行.png) 
     我们主要关注数据和索引的存储，他们都位于page的user records部分，user records占据page的大部分空间，user records由一条条的record组成，每条记录代表索引树上的一个节点(非叶子结点合叶子结点）。在一个page内部单链表到头尾由固定的两条记录来表示,字符串形式的”infimum“代表开头，“supremum”代表结尾。这两个存储在system records的段里，这个system record和user records是两个平行的段。InnoDB存在4种不同的Record，它们分别是1主键索引树非叶节点 2主键索引树叶子节点 3辅助键索引树非叶节点 4辅助键索引树叶子节点。这4种节点的Record格式有一些差异，但是它们都存储着Next指针指向下一个Record 
 
-    ![avatar](record.png)   
+    ![avatar](image/record.png)   
     user records在page内以单链表的形式存在，最初数据是按照插入的先后顺序排列的，但是随着新数据的插入和旧数据的删除，数据物理顺序会变的混乱
 
-    ![avatar](page序.png)  
+    ![avatar](image/page序.png)  
 5. 现在看下如何定位一个Record：
 
     1）通过根节点开始遍历一个索引的B+树，通过各层非叶子节点最终到达一个Page，这个Page里存放的都是叶子节点。
 
     2） 在Page内从"Infimum"节点开始遍历单链表（这种遍历往往会被优化），如果找到该键则成功返回。如果记录到达了"supremum"，说明当前Page里没有合适的键，这时要借助Page的Next Page指针，跳转到下一个Page继续从"Infimum"开始逐个查找。
 
-    ![avatar](record遍历.png)         
+    ![avatar](image/record遍历.png)         
 6. 根据B+tree节点的不同，user records可以被分成四种格式     
 
     1）主索引树非叶节点（绿色）     
@@ -122,10 +122,10 @@
     * 辅助索引键值（Secondary Key Fields），这是B+树必须的。
 
     * 主键值（Cluster Key Fields），用来在主索引树里再做一次B+树检索来找到整条记录。
-   ![avatar](节点.png) 
+   ![avatar](image/节点.png) 
 
 由于辅助索引的B+树与主键索引有相似的结构，这里只画出了主键索引树的结构图，只包含了"主键非叶节点"和"主键叶子节点"两种节点，也就是上图的的绿色和黄色的部分。
-   ![avatar](节点树.png) 
+   ![avatar](image/节点树.png) 
 
 
 7. 优化器       

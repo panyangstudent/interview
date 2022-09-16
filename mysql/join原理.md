@@ -22,7 +22,7 @@ for (user 表的行 ur: user表) {
 }
 ```
 匹配过程：
-![img.png](simple-loop-join.png)
+![img.png](image/simple-loop-join.png)
 特点：nested-loop join简单粗暴容易理解，就是通过双层循环比较数据来获取结果，这种算法的比较次数将会是个笛卡尔乘积，在执行效率方面来看是非常底下的。mysql对这方面进行了优化
 
 ## index nested-loop join(索引嵌套循环链接)
@@ -34,7 +34,7 @@ idnex nested-loop join的优化思路主要是为了减少内层表数据的匹�
 sql：select * from user tbl1 left join level tbl2 on tbl1.id = tbl2.user_id
 
 当level表的user_id为索引的时候执行过程如下
-![avater](index-nested-loop-join.jpg)
+![avater](image/index-nested-loop-join.jpg)
 
 注意：使用index nested-loop join算法的前提是匹配的字段必须建立索引
 
@@ -45,7 +45,7 @@ block nested-loop join其优化思路是减少内层表的扫表次数，通过�
 
 
 当level表的user_id不为索引的时候，默认会使用block nested-loop join算法，匹配过程如下：
-![img.png](block-nested-loop-join.png)
+![img.png](image/block-nested-loop-join.png)
 
 这里和simple nested-loop join算法比较相像，区别在于block算法是每次拿一批进行匹配，simple是每次拿一条和内表进行匹配。
 使用block nested-loop join算法需要开启优化器管理配置的optimizer_switch设置block_nested_loop默认为on，如果关闭则使用
