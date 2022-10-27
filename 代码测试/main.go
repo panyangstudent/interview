@@ -65,6 +65,71 @@ func main()  {
 	fmt.Println(maxProfit(nums))
 }
 /*
+49. 单词拆分
+给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s。
+注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用
+
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+
+ */
+func wordBreak(s string, wordDict []string) bool {
+
+	return false
+}
+
+/*
+48. 只出现一次的数字
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+
+说明：
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+
+位操作进行疑惑操作
+
+ */
+
+func singleNumber(nums []int) int {
+	single := 0
+	for i := 0; i< len(nums); i++  {
+		single ^= nums[i]
+	}
+	return single
+}
+/*
+47. 最长连续序列
+给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+哈希表的方式，
+ */
+
+func longestConsecutive(nums []int) int {
+	numSet := map[int]bool{}
+	for _, num := range nums{
+		numSet[num] = true
+	}
+	longestStreak := 0
+	for _, num := range nums {
+		// 判断当前位和前一位是否连续，不连续可以进入下面循环
+		if !numSet[num-1] {
+			currentNum := num
+			currentLong := 1
+			for numSet[currentNum+1] {
+				currentLong++
+				currentNum++
+			}
+			if longestStreak < currentLong {
+				longestStreak = currentLong
+			}
+		}
+	}
+	return longestStreak
+}
+
+
+/*
 46. 二叉树中的最大路径和
 
 路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
