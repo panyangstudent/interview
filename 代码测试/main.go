@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sort"
 )
 
@@ -57,17 +58,146 @@ func main()  {
 	//fmt.Println(bucketSort(sortArr, 100))
 	//strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
 	//fmt.Println(groupAnagrams(strs))
-	nums := []int{2,0,2,1,1,0}
-	sortColorsNew(nums)
-	fmt.Println(nums)
+	//nums := []int{2,0,2,1,1,0}
+	//sortColorsNew(nums)
+	//fmt.Println(nums)
+	nums := []int{7,1,5,3,6,4}
+	fmt.Println(maxProfit(nums))
+}
+/*
+46. 二叉树中的最大路径和
+
+路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
+路径和 是路径中各节点值的总和。
+给你一个二叉树的根节点 root ，返回其 最大路径和 。
+
+具体而言就是再以根节点的子树中寻找以该节点为起点的一条路径，使该路径上的节点值之和最大
+
+ */
+func maxPathSum(root *TreeNode) int {
+	maxSum := math.MinInt32
+	var maxGain func(node *TreeNode) int
+	maxGain = func(node *TreeNode) int {
+		if node == nil {
+			return 0
+		}
+
+		//  计算left的最大和, 只有在最大贡献度大于0时，才会选择子节点
+		leftGain := max(maxGain(node.Left), 0)
+		rightGain := max(maxGain(node.Right), 0)
+
+		// 该节点的最大贡献度
+		nowNodeGain := node.Val + leftGain + rightGain
+		// 更新最大贡献度
+		maxSum = max(nowNodeGain, maxSum)
+
+		// 返回该节点的贡献度
+		return node.Val + max(leftGain,rightGain)
+	}
+	return maxGain(root)
+}
+
+/*
+45. 买卖股票的最佳时机
+给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
+你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
+返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
+
+输入：[7,1,5,3,6,4]
+输出：5
+解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+
+动态规划
+每天会有两个动作，分位买进和卖出。但是在卖出之前需要持有该股票。
+dp[i][0]表示在第i天持有股票所得现金
+dp[i][1]表示第i天不持有股票所得现金
+
+如果第i天持有股票，即dp[i][0]，那么他可以由两个状态推出来：
+* 第i-1天就持有股票，那么就保持现状，所得现金就是昨天持有股票所得的现金，即：dp[i-1][0]
+* 第i-1天没有持有股票，那么第i天买入，则所得现金就是：-prices[i]
+
+那么dp[i][0]应该选择现金最大的，所以dp[i][0] = max(dp[i-1][0], -prices[0])
+
+如果第i天不持有股票，即dp[i][1]，那么该状态也可以由两个状态转移过来：
+* 第i-1天就不持有股票，那么就保持现状，则dp[i][1] = dp[i-1][1]
+* 第i天卖出股票，所得现金就是按照今天股票挂价没处所得现金：prices[i] + dp[i-1][0]
+
+同样的dp[i][1]取最大的，dp[i][1] = max(dp[i-1][1], prices[i]+dp[i-1][0])
+
+初始条件
+dp[0][0] = -prices[0]
+dp[0][1] = 0
+
+ */
+func maxProfit(prices []int) int {
+	if len(prices) == 0 {
+		return 0
+	}
+	dp := make([][]int, len(prices))
+	for i:= 0;  i<len(prices);i++ {
+		dp[i] = make([]int, 2)
+	}
+	dp[0][0] = -prices[0]
+	dp[0][1] = 0
+	for i := 1; i < len(prices); i++ {
+		dp[i][0] = max(dp[i-1][0], -prices[i])
+		dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
+	}
+	return dp[len(prices)-1][1]
+}
+
+/*
+44. 二叉树展开为链表
+
+给你二叉树的根结点 root ，请你将它展开为一个单链表：
+展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+展开后的单链表应该与二叉树 先序遍历 顺序相同。
+
+ */
+func flatten(root *TreeNode)  {
+	nodeArr := beforeFind(root)
+	for i:= 1; i<len(nodeArr); i++{
+		nodeArr[i+1].Right = nodeArr[i]
+		nodeArr[i+1].Left = nil
+	}
+	return
+}
+func beforeFind(root *TreeNode) []*TreeNode {
+	resp := make([]*TreeNode, 0)
+	if root == nil {
+		return []*TreeNode{}
+	}
+	resp = append(resp, root)
+	resp = append(resp, beforeFind(root.Left)...)
+	resp = append(resp, beforeFind(root.Right)...)
+	return resp
 }
 /*
 43. 从前序与中序遍历序列构造二叉树
 
+给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+
+前序遍历的结构：
+	[ 根节点, [左子树的前序遍历结果], [右子树的前序遍历结果] ]
+中序遍历的结构：
+	[ [左子树的中序遍历结果], 根节点, [右子树的中序遍历结果] ]
 
 */
 func buildTree(preorder []int, inorder []int) *TreeNode {
-
+	if len(preorder) == 0 {
+		return nil
+	}
+	root := &TreeNode{preorder[0], nil, nil}
+	i := 0
+	for ; i < len(inorder); i++ {
+		if inorder[i] == preorder[0] {
+			break
+		}
+	}
+	root.Left = buildTree(preorder[1:len(inorder[:i])+1], inorder[:i])
+	root.Right = buildTree(preorder[len(inorder[:i])+1:], inorder[i+1:])
+	return root
 }
 
 /*
