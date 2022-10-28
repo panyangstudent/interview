@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"sort"
 )
 
 type TreeNode struct {
@@ -65,6 +64,210 @@ func main()  {
 	fmt.Println(maxProfit(nums))
 }
 /*
+53. 排序链表
+给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
+
+归并排序，分治法
+对链表进行自顶而下的归并排序
+1. 找到链表的的中点，以中点为界限，将链表拆成两个子链表。
+2. 对两个链表分别进行排序
+3. 将两个排序后的子链表合并
+ */
+func sortList(head *ListNode) *ListNode {
+	return sort(head, nil)
+}
+
+func sort(head, tail *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+	if head.Next == tail {
+		head.Next = nil
+		return head
+	}
+	slow ,fast := head, head
+	for fast != tail {
+		slow = slow.Next
+		fast = fast.Next
+		if fast != tail {
+			fast = fast.Next
+		}
+	}
+	mid := slow
+	return mergeNew1(sort(head, mid), sort(mid, tail))
+}
+func mergeNew1(head1 ,head2 *ListNode) *ListNode  {
+	dummyHead := &ListNode{}
+	temp, temp1, temp2 := dummyHead, head1, head2
+	for temp1 != nil && temp2 != nil {
+		if temp1.Val <= temp2.Val {
+			temp.Next = temp1
+			temp1 = temp1.Next
+		} else {
+			temp.Next = temp2
+			temp2 = temp2.Next
+		}
+		temp = temp.Next
+	}
+	if temp1 != nil {
+		temp.Next = temp1
+	}
+	if temp2 != nil {
+		temp.Next = temp2
+	}
+	return dummyHead.Next
+}
+
+/*
+52. LRU 缓存
+请你设计并实现一个满足  LRU (最近最少使用) 缓存 约束的数据结构。
+实现 LRUCache 类：
+LRUCache(int capacity) 以 正整数 作为容量 capacity 初始化 LRU 缓存
+int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。
+void put(int key, int value) 如果关键字 key 已经存在，则变更其数据值 value ；如果不存在，则向缓存中插入该组 key-value 。如果插入操作导致关键字数量超过 capacity ，则应该 逐出 最久未使用的关键字。
+函数 get 和 put 必须以 O(1) 的平均时间复杂度运行。
+
+
+哈希表+双向链表
+* 双向链表按照被使用的顺序存储这些键值对，靠近头部的键值对是最近使用的，二靠近尾部的键值对是最近未使用的
+
+这样我们首先使用哈希表进行定位，超出缓存项在双向链表中的位置，随后将其移动到双向链表的头部，即可在O(1)的时间内完成get或者put操作。具体方式如下：
+* 对于get操作，首相哈希表判断是否存在，不存在返回-1，存在得到其在双向链表中的位置，并将其移动到双向链表的头部，返回该节点的值
+* 对于put操作，判断是否存在，不存在则，利用key和value创建一个新的节点，在双向链表的头部添加该节点。并将key和该节点添加进哈希表中。然后判断双向链表的节点数是否超过容量，如果超过，则删除尾部节点，并删除哈希表中的key
+*/
+type DListNode struct {
+	Val  int
+	Next *DListNode
+	Prev *DListNode
+}
+type LRUCache struct {
+	hashTable map[int]*DListNode
+	head *DListNode //头结点
+	capacity int // 容量
+	size int // 当前容量
+	tail *DListNode//尾结点
+}
+
+func Constructor(capacity int) LRUCache {
+	l := LRUCache{
+		hashTable: make(map[int]*DListNode),
+		head:      &DListNode{},
+		capacity:  capacity,
+		size:      0,
+	}
+	l.head.Next = l.tail
+	l.tail.Prev = l.head
+	return l
+}
+
+
+func (this *LRUCache) Get(key int) int {
+	// 存在
+	if _, ok := this.hashTable[key]; ok {
+		// 移动到头部
+		this.moveToHead(this.hashTable[key])
+		return this.hashTable[key].Val
+	}
+	return -1
+}
+
+func (this *LRUCache) Put(key int, value int)  {
+	if _,ok := this.hashTable[key]; ok {
+		if value != this.hashTable[key].Val {
+			this.hashTable[key].Val = value
+		}
+		this.moveToHead(this.hashTable[key])
+	} else  {
+		if this.size >= this.capacity {
+			removed := this.removeTail()
+			delete(this.hashTable, removed.Val)
+			this.size--
+		}
+	}
+}
+
+func (this *LRUCache) removeTail() *DListNode {
+	node := this.tail.Prev
+	this.removeNode(node)
+	return node
+}
+
+func (this *LRUCache) moveToHead(node *DListNode)  {
+	this.removeNode(node)
+	this.moveToHead(node)
+}
+
+func (this *LRUCache) removeNode(node *DListNode)  {
+	node.Prev.Next = node.Next
+	node.Next.Prev = node.Prev
+}
+func (this *LRUCache) addToHead(node *DListNode)  {
+	node.Next = this.head.Next
+	node.Prev = this.head.Prev
+	this.head.Next.Prev = node
+	this.head.Next = node
+}
+
+/*
+51. 环形链表||
+给定一个链表的头节点  head ，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+
+如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。
+为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。
+如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+
+不允许修改 链表。
+
+输入：head = [3,2,0,-4], pos = 1
+输出：返回索引为 1 的链表节点
+解释：链表中有一个环，其尾部连接到第二个节点。
+ */
+
+func detectCycle(head *ListNode) *ListNode {
+	slow,fast := head, head
+	for fast != nil  {
+		slow = slow.Next
+		if fast.Next == nil {
+			return nil
+		}
+		fast = fast.Next.Next
+		if fast == slow {
+			p := head
+			for p != slow {
+				p = p.Next
+				slow = slow.Next
+			}
+			return p
+		}
+	}
+	return nil
+}
+
+/*
+50. 环形链表
+给你一个链表的头节点 head ，判断链表中是否有环。
+如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。
+为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。
+注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
+如果链表中存在环 ，则返回 true 。 否则，返回 false 。
+
+快慢指针，注意循环条件为两个快慢指针的node不相等，当快指针位nil或者他的next位nil，就可以认为没有环存在
+ */
+func hasCycle(head *ListNode) bool {
+	if head == nil {
+		return false
+	}
+	index1, index2 := head, head.Next
+	for index1 != index2 {
+		if index2 == nil || index2.Next == nil {
+			return false
+		}
+		index1 = index1.Next
+		index2 = index2.Next.Next
+	}
+	return true
+}
+/*
 49. 单词拆分
 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s。
 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用
@@ -73,10 +276,29 @@ func main()  {
 输出: true
 解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
 
+动态规划
+dp[i]表示以第i为字符结尾的字符串是否可以被wordDict中字符拼接的结果，为bool值
+dp[i]的转移是0<=n<=i的dp[n]转移过来，当dp[n]表示为true时，需要考虑s[n:i]是否可以由wordDict中的字符串组成，
+所以转移方程为：dp[i] = dp[j] && wordDict[s[j:i]]
+初始状态dp[0] = true，我们认为空串可以被任何字符串匹配
  */
 func wordBreak(s string, wordDict []string) bool {
+	wordDictSet := make(map[string]bool)
+	for _, w:=range wordDict{
+		wordDictSet[w] = true
+	}
+	dp := make([]bool,len(s)+1)
+	dp[0] = true
+	for i:=1;i<= len(s);i++ {
+		for j:=0;j<i;j++ {
+			if dp[j] && wordDictSet[s[j:i]] {
+				dp[i] = true
+				break
+			}
+		}
+	}
 
-	return false
+	return dp[len(s)]
 }
 
 /*
