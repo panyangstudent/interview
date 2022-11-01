@@ -64,6 +64,375 @@ func main()  {
 	fmt.Println(maxProfit(nums))
 }
 /*
+67.
+ */
+/*
+66. 除自身以外数组的乘积
+给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
+题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
+请不要使用除法，且在 O(n) 时间复杂度内完成此题。
+
+*/
+func productExceptSelf(nums []int) []int {
+	// 左右两个方向乘积
+	resp := make([]int, 0)
+	left := make([]int, len(nums))
+	right := make([]int, len(nums))
+	left[0], right[len(nums)-1] = 1, 1
+	for i:=1;i<len(nums);i++ {
+		left[i] = left[i-1] * nums[i-1]
+	}
+	for j:=len(nums)-2; j>=0;j-- {
+		right[j] = right[j+1] * nums[j+1]
+	}
+	for i := 0; i < len(nums); i++ {
+		resp = append(resp, right[i] * left[i])
+	}
+	return resp
+}
+
+/*
+65. 二叉树的最近公共祖先
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，
+最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+
+*/
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if root.Val == p.Val || root.Val == q.Val {
+		return root
+	}
+	left := lowestCommonAncestor(root.Left, p,q)
+	right := lowestCommonAncestor(root.Right, p,q)
+	if left != nil && right != nil {
+		return  root
+	}
+	if left == nil {
+		return right
+	}
+	return left
+}
+/*
+64. 回文链表
+
+给你一个单链表的头节点 head ，请你判断该链表是否为回文链表。如果是，返回 true ；否则，返回 false 。
+
+*/
+func isPalindrome(head *ListNode) bool {
+	nodeArr := make([]*ListNode,0)
+	for head != nil {
+		nodeArr = append(nodeArr, head)
+		head = head.Next
+	}
+	j := len(nodeArr) -1
+	for i := 0; i <= j; i++ {
+		if nodeArr[i].Val != nodeArr[j].Val {
+			return false
+		}
+		j--
+	}
+	return true
+}
+/*
+63. 翻转二叉树
+给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
+ */
+func invertTree(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	Right := invertTree(root.Right)
+	Left := invertTree(root.Left)
+	root.Left = Right
+	root.Right = Left
+	return root
+}
+
+/*
+62.最大正方形
+
+在一个由 '0' 和 '1' 组成的二维矩阵内，找到只包含 '1' 的最大正方形，并返回其面积。
+
+动态规划
+用dp[i][j]表示以(i, j)为右下角，且只包含1的正方形的边长最大值，如果我们能计算出所有dp(i,j)的值，
+那么其中的最大值即为矩阵中只包含1的正方形的边长最大值。如何计算dp[i][j]中的每个元素值？对于每个位置
+(i,j)，检查矩阵中该位置的值：
+* 如果该位置的值是0，则dp[i][j] = 0，因为当前位置不可能在由1组成的正方形中，
+* 如果该位置的值是1，则dp[i][j] 的值由其上方，左方和左上方的dp最小值加1得到
+
+此外还需要考虑边界情况，如果i，j中至少有一个为0，则以位置(i，j)为右下角的最大正方形的边长只能为1，因此dp[i][j] = 1
+
+*/
+func maximalSquare(matrix [][]byte) int {
+	dp := make([][]int, len(matrix))
+	maxSide := 0
+	for i:= 0;i<len(matrix);i++ {
+		dp[i] = make([]int,len(matrix[i]))
+		for j:= 0;j<len(matrix[i]);j++ {
+			dp[i][j] = int(matrix[i][j] - '0')
+			// 以防只有一个1的格子的情况发生
+			if dp[i][j] == 1 {
+				maxSide = 1
+			}
+		}
+	}
+	for i:=1;i<len(matrix);i++ {
+		for j := 1;j<len(matrix[i]);j++ {
+			if dp[i][j] == 1 {
+				dp[i][j] = min(dp[i-1][j], min(dp[i-1][j-1], dp[i][j-1])) + 1
+				if dp[i][j] > maxSide {
+					maxSide = dp[i][j]
+				}
+			}
+		}
+	}
+	return maxSide * maxSide
+}
+/*
+61. 数组中的第K个最大元素
+
+给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+ */
+
+func findKthLargest(nums []int, k int) int {
+	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
+}
+
+func quickSelect(a []int, l, r, index int) int {
+	q := partition(a, l, r)
+	if q == index {
+		return a[q]
+	} else if q < index {
+		return quickSelect(a, q + 1, r, index)
+	}
+	return quickSelect(a, l, q - 1, index)
+}
+
+func partition(a []int, l, r int) int {
+	x := a[r]
+	i := l - 1
+	for j := l; j < r; j++ {
+		if a[j] <= x {
+			i++
+			a[i], a[j] = a[j], a[i]
+		}
+	}
+	a[i+1], a[r] = a[r], a[i+1]
+	return i + 1
+}
+
+
+/*
+60. 反转链表
+给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+
+ */
+func reverseList(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	node := reverseList(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return node
+}
+
+/*
+59. 岛屿的数量
+给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+此外，你可以假设该网格的四条边均被水包围。
+
+回溯法
+双层循环，如果遇到grid[i][j] == 1, 并且没有被访问过的则不再访问。这里需要借助
+一个map来记录是否被访问过
+ */
+
+func numIslands(grid [][]byte) int {
+	visiet := make([][]bool, len(grid))
+	for j := 0; j < len(grid); j++ {
+		visiet[j] = make([]bool, len(grid[0]))
+	}
+	ans := 0
+	for i := 0; i < len(grid); i++ {
+		for j:=0;j<len(grid[i]);j++ {
+			if !visiet[i][j] && grid[i][j] == '1' {
+				ans++
+				Find(grid, i, j ,visiet)
+			}
+		}
+	}
+	return ans
+}
+func Find(grid [][]byte,  i int , j int, visiet [][]bool) {
+	if i < 0 || j < 0 || i >= len(grid) || j >= len(grid[i]) {
+		return
+	}
+	if visiet[i][j] || grid[i][j] == '0' {
+
+	}
+	visiet[i][j] = true
+	// 上下左右
+	Find(grid, i-1, j, visiet)
+	Find(grid, i+1, j, visiet)
+	Find(grid, i, j-1, visiet)
+	Find(grid, i, j+1, visiet)
+}
+
+/*
+58. 打家劫舍
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装
+有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+
+输入：[1,2,3,1]
+输出：4
+解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+
+动态规划
+
+定义dp[i]，表示当前房间可以获取到的最高金额
+定义转移方程： 由于每天晚上一个房间可以选择投或者不偷，并且相邻两个房间不可以在同一晚被偷，
+	dp[i] = max(dp[i-1], dp[i-2]+nums[i])
+
+初始条件
+	dp[0] = nums[0]
+	dp[1] = max(nums[1], dp[0])
+ */
+func rob(nums []int) int {
+	if len(nums) < 1 {
+		return 0
+	}
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	dp := make([]int, len(nums))
+	dp[0] = nums[0]
+	dp[1] = max(dp[0], nums[1])
+	for i := 2 ; i< len(nums); i++ {
+		dp[i] = max(dp[i-2]+nums[i], dp[i-1])
+	}
+	return dp[len(nums)-1]
+}
+/*
+57. 多数元素
+
+给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素。
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+哈希表
+*/
+func majorityElement(nums []int) int {
+	valMap := make(map[int]int, 0)
+	maxindex, maxVal := 0, 0
+	for _, num := range nums {
+		valMap[num]++
+		if valMap[num] > maxindex {
+			maxindex = valMap[num]
+			maxVal = num
+		}
+	}
+	return maxVal
+}
+/*
+56. 相交链表
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+
+哈希表
+*/
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+	nodes := make(map[*ListNode]bool, 0)
+	for temp := headA; temp != nil ; temp = temp.Next {
+		nodes[temp] = true
+	}
+	for temp := headB; temp!= nil; temp = temp.Next {
+		if nodes[temp] {
+			return temp
+		}
+	}
+	return nil
+}
+/*
+55. 最小栈
+
+设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
+
+实现 MinStack 类:
+
+MinStack() 初始化堆栈对象。
+void push(int val) 将元素val推入堆栈。
+void pop() 删除堆栈顶部的元素。
+int top() 获取堆栈顶部的元素。
+int getMin() 获取堆栈中的最小元素。
+*/
+type MinStack struct {
+	stack []int
+	minStack []int
+}
+
+func ConstructorN() MinStack {
+	return MinStack{
+		stack:    make([]int, 0),
+		minStack: make([]int, 0),
+	}
+}
+
+
+func (this *MinStack) Push(val int)  {
+	this.stack = append(this.stack, val)
+	minVal := this.minStack[len(this.minStack) -1]
+	this.minStack = append(this.minStack, min(minVal, val))
+}
+
+
+/*
+54. 乘积最大子数组
+
+给你一个整数数组 nums ，请你找出数组中乘积最大的非空连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+测试用例的答案是一个 32-位 整数。
+子数组 是数组的连续子序列。
+
+输入: nums = [2,3,-2,4]
+输出: 6
+解释: 子数组 [2,3] 有最大乘积 6。
+
+动态规划
+定义dp[i]数组的含义
+dp[i]：表示以第i个数字结束乘积最大的连续子数组的乘积。
+dp[i]的得到依赖dp[i-1]转移得到
+所以dp[i] = max(dp[j-1] * nums[], nums[i]), 0<=i<n
+初始条件：dp[0] = nums[0]
+
+但是我们这里知道，当前位置上的最优解，未必是由前一个位置的最优解转移得到。
+根据政府性的分类讨论：
+考虑到当前位置如果是一个负数的话，那么我们希望以他前一个位置结尾的某个段的积也是负数，这样就可以负负得正，并且我们希望这个积尽可能的小。
+如果当前位置是一个正数，我们更希望以他前一个位置结尾某个段的积也是个正数，并且希望她尽可能的大。于是这里我们需要维护一个Fmin(i)，他表示
+以第i个元素结尾的乘积最小数组的乘积，那么我们可以重新书写转移方程：
+Fmax(i) = max(Fmax(i-1) * nums[i], Fmin(i-1)* nums[i], nums[i])
+Fmin(i) = min(Fmin(i-1) * nums[i], Fmax(i-1)* nums[i], nums[i])
+
+考虑优化空间，维护两个变量
+ */
+func maxProduct(nums []int) int {
+	maxF, minF, ans := nums[0], nums[0], nums[0]
+	for i := 1; i < len(nums); i++ {
+		mx, mn := maxF, minF
+		maxF = max(nums[i], max(nums[i]*mx, mn*nums[i]))
+		minF = min(nums[i], min(nums[i]*mx, mn*nums[i]))
+		ans = max(maxF, maxF)
+	}
+	return ans
+}
+/*
 53. 排序链表
 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 
