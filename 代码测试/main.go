@@ -1,8 +1,10 @@
 package main
 
 import (
+	"container/heap"
 	"fmt"
 	"math"
+	"sort"
 )
 
 type TreeNode struct {
@@ -60,12 +62,407 @@ func main()  {
 	//nums := []int{2,0,2,1,1,0}
 	//sortColorsNew(nums)
 	//fmt.Println(nums)
-	nums := []int{7,1,5,3,6,4}
-	fmt.Println(maxProfit(nums))
+	nums := []int{1,1,1}
+	fmt.Println(subarraySum(nums,2))
 }
 /*
-67.
+80.
  */
+
+/*
+79. 合并二叉树
+
+给你两棵二叉树： root1 和 root2 。
+
+想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。
+合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，不为 null 的节点将直接作为新二叉树的节点。
+返回合并后的二叉树。
+注意: 合并过程必须从两个树的根节点开始。
+
+输入：root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
+输出：[3,4,5,5,4,null,7]
+
+ */
+func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
+	if root1 == nil && root2 == nil {
+		return nil
+	}
+	newNode := &TreeNode{}
+	var (
+		LeftNode1 *TreeNode
+		LeftNode2 *TreeNode
+		RightNode1 *TreeNode
+		RightNode2 *TreeNode
+	)
+	if root1 != nil {
+		newNode.Val += root1.Val
+		LeftNode1 = root1.Left
+		RightNode1 = root1.Right
+	}
+	if root2 != nil {
+		newNode.Val += root2.Val
+		LeftNode2 = root2.Left
+		RightNode2 = root2.Right
+	}
+	newNode.Left = mergeTrees(LeftNode1, LeftNode2)
+	newNode.Right = mergeTrees(RightNode1, RightNode2)
+	return newNode
+}
+
+/*
+78. 最短无序连续子数组
+
+给你一个整数数组 nums ，你需要找出一个 连续子数组 ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
+请你找出符合题意的 最短子数组，并输出它的长度。
+
+输入：nums = [2,6,4,8,10,9,15]
+输出：5
+解释：你只需要对 [6, 4, 8, 10, 9] 进行升序排序，那么整个表都会变为升序排序。
+
+排序
+我们将给定的数组nums表示为三段子数组拼接的形式，分别记作nums1,nums2,nums3,当我们对nums2进行排序后，整个数组都是有序的
+因此我们将原数组进行排序，这样nums1，nums3都不变，将排序后的数组和排序前的数组进行比较，取最长的的相同的前缀为nums1，最最长的相同的后缀为
+nums3，剩下的就是最短的nums2
+ */
+func findUnsortedSubarray(nums []int) int {
+	oldnums := make([]int, len(nums))
+	copy(oldnums, nums)
+	sort.Ints(nums)
+	index1, index2 := 0, len(nums)-1
+	for ;index1 < len(nums) && nums[index1] == oldnums[index1]; {
+		index1++
+	}
+	for ; index2 >= 0 && nums[index2] == oldnums[index2]; {
+		index2--
+	}
+	if index1 > index2 {
+		return 0
+	}
+	return index2 - index1 + 1
+}
+/*
+77. 和为 K 的子数组
+
+给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的连续子数组的个数 。
+
+输入：nums = [1,1,1], k = 2
+输出：2
+
+枚举方法
+ */
+func subarraySum(nums []int, k int) int {
+	count := 0
+	for start :=0;start <len(nums);start++ {
+		sum := 0
+		for end := start; end >= 0;end-- {
+			sum += nums[end]
+			if sum == k {
+				count++
+			}
+		}
+	}
+	return count
+}
+
+/*
+76. 二叉树的直径
+给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
+
+深度优先遍历，计算每个节点的子树节点的高度，对于左右子树，当前节点的最长直径需要取左右子树中最大的一个。
+*/
+var res int
+func diameterOfBinaryTree(root *TreeNode) int {
+	res = 0
+	dfs(root)
+	return res
+}
+func dfs(root * TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	l := dfs(root.Left)
+	r := dfs(root.Right)
+	path := max(l, r)
+	res = max(l+r, res)
+	return  path + 1
+}
+/*
+75. 前 K 个高频元素
+给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+
+
+*/
+func topKFrequent(nums []int, k int) []int {
+	m := make(map[int]int)
+	// 首先遍历一遍，得出元素和出现次数的关系
+	for _, v := range nums {
+		m[v]++
+	}
+	// 定义一个数组桶
+	buckets := make([][]int, len(nums)+1)
+	// 相同次数的放在一个桶中，这里本来就是一个桶排序。
+	for num, v := range m {
+		if len(buckets[v]) <= 0 {
+			buckets[v] = make([]int, 0)
+		}
+		buckets[v] = append(buckets[v], num)
+	}
+	ret := make([]int, 0)
+	// 计算每个桶中的数量，如果数量>=k ，则返回前k个元素，出现次数最大的开始递减循环
+	for i := len(buckets) - 1; i >= 0; i-- {
+		if len(buckets[i]) > 0 {
+			ret = append(ret, buckets[i]...)
+			if len(ret) >= k {
+				return ret[:k]
+			}
+		}
+	}
+	return ret
+}
+
+/*
+74. 零钱兑换
+给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
+计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
+你可以认为每种硬币的数量是无限的。
+
+输入：coins = [1, 2, 5], amount = 11
+输出：3
+解释：11 = 5 + 5 + 1
+
+动态规划
+dp[i]，表示组成i金额所需的最少硬币数量
+循环时，需要考虑dp[i-j]转移过来，j表示不同面额的硬币数量
+所以转移方式为dp[i] = min(dp[i-j], dp[i]) + 1
+dp[0] = 0
+ */
+func coinChange(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 0
+	for i := 1; i <= amount; i++ {
+		dp[i] = math.MaxInt32
+		for _, coin := range coins {
+			if coin <= i && dp[i-coin] != math.MaxInt32 {
+				dp[i] = min(dp[i-coin] + 1, dp[i])
+			}
+		}
+	}
+	if dp[amount] == math.MaxInt32 {
+		return -1
+	}
+	return dp[amount]
+}
+
+/*
+73. 最长递增子序列
+给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+
+动态规划
+子问题的最优解可以表示全局最优
+dp[i]表示以第i位字符结束的最长子序列
+dp[i] =  max(dp[j], dp[i]) + 1
+dp[i] = 1, 0<=i<len(nums)
+*/
+func lengthOfLIS(nums []int) int {
+	dp := make([]int, len(nums))
+	dp[0] = 1
+	ans := 1
+	for i := 1; i < len(nums); i++ {
+		dp[i] = 1
+		for j:=i; j>=0;j--{
+			if nums[i] > nums[j] {
+				dp[i] = max(dp[j]+1, dp[i])
+			}
+		}
+		if ans < dp[i] {
+			ans = dp[i]
+		}
+	}
+	return ans
+}
+/*
+72, 寻找重复数
+
+给定一个包含 n + 1 个整数的数组 nums ，其数字都在 [1, n] 范围内（包括 1 和 n），可知至少存在一个重复的整数。
+假设 nums 只有 一个重复的整数 ，返回 这个重复的数 。
+你设计的解决方案必须 不修改 数组 nums 且只用常量级 O(1) 的额外空间。
+
+输入：nums = [1,3,4,2,2]
+输出：2
+
+快慢指针
+
+ */
+func findDuplicate(nums []int) int {
+	// 快慢指针，类似环形链表的处理
+	// 如长度n+1，值为1-n的数组 [1,3,2,4,2]
+	// 下标与对应元素值0->1,1->3,2->2,3->4,4->2
+	// n->f[n]，也即转为链表可认为，0->1->3->4->2->2->2->....也即入环节点元素为2
+	// 参照上述，快慢指针
+	slow, fast := 0,0
+	slow = nums[slow]
+	fast = nums[nums[fast]]
+	// 移动快慢指针，直到相遇退出
+	for slow != fast {
+		slow = nums[slow]
+		fast = nums[nums[fast]]
+	}
+	// fast置为0，slow继续，遍历，直到相遇，此为入环节点，也即重复元素
+	pre1, pre2 := 0, slow
+	for pre1 != pre2 {
+		pre1 = nums[pre1]
+		pre2 = nums[pre2]
+	}
+	return pre1
+}
+/*
+71. 移动零
+给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+请注意 ，必须在不复制数组的情况下原地对数组进行操作。
+
+*/
+func moveZeroes(nums []int)  {
+	index1,index2 := 0,0
+	for ;index2 < len(nums); index2++ {
+		if nums[index2] != 0{
+			nums[index1], nums[index2] = nums[index2], nums[index1]
+			index1++
+		}
+	}
+	return
+}
+/*
+70， 完全平方数
+给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
+完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+
+输入：n = 12
+输出：3
+解释：12 = 4 + 4 + 4
+
+1，,2，,3，,4，,5...的平方就是完全平方数
+这里输入为n，需要求和为n时所使用的完全平方数的最少数量
+
+动态规划
+dp[i]:表示最少需要多少个数的平方来表示整数i
+这些数一定会落在[1,n]。我们可以枚举这些数，假设当前枚举到j，那么我们还需要取若干数的平方，构成i-j^2。此时我们发现该子问题和原问题类似。
+于是这里可以得到转移方程：
+	dp[i] = 1+ min(dp[i-j^2]) (0<=j<=i)
+
+初始条件
+dp[0] = 0
+*/
+func numSquares(n int) int {
+	dp := make([]int, n+1)
+	for i := 1; i <= n; i++ {
+		minn := math.MaxInt32
+		for j := 1; j*j <= i; j++ {
+			minn = min(minn, dp[i-j*j])
+		}
+		dp[i] = minn + 1
+	}
+	return dp[n]
+}
+
+/*
+69. 会议室 II
+给你一个会议时间安排的数组 intervals ，每个会议时间都会包括开始和结束的时间 intervals[i] = [starti, endi] ，返回 所需会议室的最小数量 。
+
+ */
+
+func minMeetingRooms(intervals [][]int) int {
+	// 开始时间和结束时间分开进行统计
+	start := make([]int,0)
+	end:= make([]int, 0)
+	for _, interval := range intervals {
+		start = append(start, interval[0])
+		end = append(end, interval[1])
+	}
+	sort.Ints(start)
+	sort.Ints(end)
+	i, j, ans, cut := 0,0,0,0
+	for i < len(start) && j<len(end) {
+		if start[i] < end[j] { // 如果开始时间小于最近的结束时间，那么就需要增加一个会议室
+			cut++
+			i++
+		} else { // 如果开始时间大于等于最近的结束时间，那么可以减少一个会议室，
+			cut--
+			j++
+		}
+		ans = max(ans, cut)
+	}
+
+	return ans
+}
+/*
+68. 搜索二维矩阵 II
+
+编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
+每行的元素从左到右升序排列。
+每列的元素从上到下升序排列。
+
+二分查找
+
+ */
+func searchMatrix(matrix [][]int, target int) bool {
+	for i := 0 ; i < len(matrix); i++ {
+		// 二分查找
+		if SearchIns(matrix[i], 0, len(matrix[i]), target){
+			return true
+		}
+	}
+	return false
+}
+// 二分查找
+func SearchIns(row []int,leftIndex int, rightIndex int, findVal int) bool {
+	if leftIndex > rightIndex {
+		return false
+	}
+	mid := (leftIndex + rightIndex) / 2
+	if row[mid] < findVal {
+		return SearchIns(row, mid + 1, rightIndex, findVal)
+	} else if row[mid] > findVal{
+		return SearchIns(row, leftIndex, mid-1, findVal)
+	}
+
+	return  true
+}
+/*
+67.滑动窗口最大值
+给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
+返回 滑动窗口中的最大值 。
+
+
+*/
+var a []int
+
+type hp struct{ sort.IntSlice }
+
+func (h hp) Less(i, j int) bool  { return a[h.IntSlice[i]] > a[h.IntSlice[j]] }
+func (h *hp) Push(v interface{}) { h.IntSlice = append(h.IntSlice, v.(int)) }
+func (h *hp) Pop() interface{}   { a := h.IntSlice; v := a[len(a)-1]; h.IntSlice = a[:len(a)-1]; return v }
+
+func maxSlidingWindow(nums []int, k int) []int {
+	a = nums
+	q := &hp{make([]int, k)}
+	for i := 0; i < k; i++ {
+		q.IntSlice[i] = i
+	}
+	heap.Init(q)
+
+	n := len(nums)
+	ans := make([]int, 1, n-k+1)
+	ans[0] = nums[q.IntSlice[0]]
+	for i := k; i < n; i++ {
+		heap.Push(q, i)
+		for q.IntSlice[0] <= i-k {
+			heap.Pop(q)
+		}
+		ans = append(ans, nums[q.IntSlice[0]])
+	}
+	return ans
+}
 /*
 66. 除自身以外数组的乘积
 给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
@@ -443,10 +840,10 @@ func maxProduct(nums []int) int {
 3. 将两个排序后的子链表合并
  */
 func sortList(head *ListNode) *ListNode {
-	return sort(head, nil)
+	return sortN(head, nil)
 }
 
-func sort(head, tail *ListNode) *ListNode {
+func sortN(head, tail *ListNode) *ListNode {
 	if head == nil {
 		return head
 	}
@@ -463,7 +860,7 @@ func sort(head, tail *ListNode) *ListNode {
 		}
 	}
 	mid := slow
-	return mergeNew1(sort(head, mid), sort(mid, tail))
+	return mergeNew1(sortN(head, mid), sortN(mid, tail))
 }
 func mergeNew1(head1 ,head2 *ListNode) *ListNode  {
 	dummyHead := &ListNode{}
