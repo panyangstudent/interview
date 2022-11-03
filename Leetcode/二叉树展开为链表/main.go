@@ -1,9 +1,10 @@
 package main
 
-import (
-	"fmt"
-)
-
+type TreeNode struct {
+	Val int
+	Left *TreeNode
+	Right *TreeNode
+}
 func flatten(root *TreeNode)  {
 	list := preorderTraversal(root)
 	for i := 1; i < len(list); i++ {

@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/两两交换链表节点/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/两两交换链表节点/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/两数之和||/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/两数之和||/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/两数相加/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/两数相加/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/两数相加||/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/两数相加||/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/二叉搜索树中第K小的元素/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉搜索树中第K小的元素/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树展开为链表/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树展开为链表/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树最大路径和/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树最大路径和/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树最近的公共祖先/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树最近的公共祖先/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
