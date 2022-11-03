@@ -4,6 +4,7 @@ import (
     "strings"
 )
 
+// 待回顾
 func convert(s string, numRows int) string {
     if numRows == 1 {
         return s
