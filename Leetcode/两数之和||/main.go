@@ -1,8 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
 func twoSum(numbers []int, target int) []int {
     low, high := 0, len(numbers) - 1
     for low < high {

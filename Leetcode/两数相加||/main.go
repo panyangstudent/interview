@@ -1,8 +1,10 @@
 package main
 
-import (
-	"fmt"
-)
+
+type ListNode struct {
+	Val int
+	Next *ListNode
+}
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
     res := &ListNode{Val: 0, Next: nil}
