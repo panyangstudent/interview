@@ -1,11 +1,5 @@
 package main 
-import (
-	"fmt"
-)
 
-func main() {
-
-}
 
 func permute(nums []int) [][]int {
 	if len(nums) == 1 {

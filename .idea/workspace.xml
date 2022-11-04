@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Leetcode/会议室/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树的前中后序层次遍历/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树的前中后序层次遍历/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树的右视图/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树的右视图/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/二叉树锯齿遍历/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/二叉树锯齿遍历/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/会议室||/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/会议室||/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/全排列/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/全排列/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

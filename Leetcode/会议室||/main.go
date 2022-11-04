@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"sort"
 )
 
 //给定一个会议时间安排的数组，每个会议时间都会包括开始和结束的时间 [[s1,e1],[s2,e2],...] (si < ei)，
@@ -23,7 +23,7 @@ import (
 func minMeetingRooms(intervals [][]int) int {
 	// 按照会议的开始时间来排序
 	sort.Slice(intervals , func(i, j int) bool {
-		return intervals[a][0] < intervals[b][0]
+		return intervals[i][0] < intervals[j][0]
 	})
 	// 堆用来存放已申请会议室的会议结束时间
 	heap := make([]int, 0)
@@ -78,23 +78,30 @@ func minMeetingRoomsHeapBody(nums []int, curRoot, size int) {
 	}
 }
 
-func minMeetingRooms(intervals [][]int) int {
-	sort.Slice(intervals, func (a,b int) bool {
-		return intervals[a][0] < intervals[b][0]
-	})
-
-	heap := make([]int, 0)// 用来存放结束时间
-	for i :=0; i< len(intervals); i++ {
-		if len(heap) == 0 {
-			heap = append(heap, intervals[i])
-		} else {
-			if heap[0] > intervals[i][0]  {
-				heap = append(heap, intervals[i][1])
-			}  else {
-				heap[0] = intervals[i][1]
-			}			
-			minMeetingRoomsBuildHeap(heap)
-		}
+func minMeetingRoomsN(intervals [][]int) int {
+	startArr, endArr := make([]int, 0), make([]int, 0)
+	for _, interval := range intervals {
+		startArr = append(startArr, interval[0])
+		endArr = append(endArr, interval[1])
 	}
-	return len(heap)	
+	sort.Ints(startArr)
+	sort.Ints(endArr)
+	index1, index2, res ,ans := 0,0,0,0
+	for index1 < len(startArr) && index2 < len(endArr) {
+		if startArr[index1] < endArr[index2] {
+			res++
+			index1++
+		} else {
+			res--
+			index2++
+		}
+		ans = max(ans, res)
+	}
+	return ans
+}
+func max(a, b int) int {
+	if a < b {
+		return b
+	}
+	return a
 }
