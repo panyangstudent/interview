@@ -1,9 +1,10 @@
 package main
 
-import (
-	"fmt"
-)
-
+type TreeNode struct {
+	Val int
+	Left *TreeNode
+	Right *TreeNode
+}
 func rightSideView(root *TreeNode) []int {
 	res := make([]int, 0)
     if root == nil {
