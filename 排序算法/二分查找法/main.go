@@ -6,8 +6,8 @@ import (
 
 // 二分查找法通过对折的方式查找一个数据，条件必须是一个有序的数组，数组的底层是顺序链表
 func main()  {
-	searchArr := []int{2,4,6,12,23,24,25,33,34,45,55,60,67,68,77,87}
-	res := BinarySearch(searchArr,0, len(searchArr)-1,60)
+	searchArr := []int{1, 3}
+	res := BinarySearch(searchArr,0, len(searchArr)-1,3)
 	fmt.Printf("找到了，下标为：%v \n", res)
 }
 func BinarySearch(arr []int, leftIndex int, rightIndex int, findVal int) int {

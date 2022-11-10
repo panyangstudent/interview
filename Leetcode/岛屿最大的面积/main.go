@@ -1,13 +1,10 @@
 package main
 
-import (
-	"fmt"
-)
 func maxAreaOfIsland(grid [][]int) int {
 	m := len(grid)
 	max := 0
 	for i := 0;i< m;i++ {
-		for j := 0 ; j< grid[i];j++ {
+		for j := 0 ; j < len(grid[i]);j++ {
 			if grid[i][j] == 1 {
 				tempMax := check(grid, i, j)
 				if max < tempMax  {

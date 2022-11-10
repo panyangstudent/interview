@@ -6,28 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/全排列/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/全排列/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/分糖果/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/分糖果/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/删除二叉搜索树中的节点/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/删除二叉搜索树中的节点/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/删除链表倒数第N个节点/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/删除链表倒数第N个节点/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/前K个高频元素/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/前K个高频元素/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/前序中序构造二叉树/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/前序中序构造二叉树/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/加油站/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/加油站/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/单词搜索/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/单词搜索/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/反转字符串/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/反转字符串/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/反转链表/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/反转链表/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/反转链表||/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/反转链表||/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/只出现一次的数字/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/只出现一次的数字/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/合并K个升序链表/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/合并K个升序链表/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/合并两个有序链表/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/合并两个有序链表/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/合并区间/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/合并区间/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/合并有序数组/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/合并有序数组/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/回文数/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/回文数/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/在排序数组中查找元素的第一个和最后一个位置/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/在排序数组中查找元素的第一个和最后一个位置/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/复原IP地址/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/复原IP地址/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/子集/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/子集/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/存在重复元素/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/存在重复元素/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/对称二叉树/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/对称二叉树/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/寻找重复数/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/寻找重复数/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/将有序数组转换为二叉搜索树/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/将有序数组转换为二叉搜索树/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/岛屿数量/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/岛屿数量/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/岛屿最大的面积/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/岛屿最大的面积/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/平衡二叉树/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/平衡二叉树/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/括号生成/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/括号生成/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/搜索二维矩阵/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/搜索二维矩阵/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

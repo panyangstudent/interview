@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "sort"
 
 func findDuplicate(nums []int) int {
     sort.Ints(nums)
