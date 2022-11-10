@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func candy(ratings []int) int {
 	count := 0
 	mapArr := make(map[int]int)
@@ -26,5 +22,6 @@ func candy(ratings []int) int {
 	}
 	return count
 }
+
 
 

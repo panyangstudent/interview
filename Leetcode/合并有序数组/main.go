@@ -34,3 +34,26 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
 	copy(nums1, newnums)
 	fmt.Printf("merge value is ", nums1)
 }
+
+func mergeN(nums1 []int, m int, nums2 []int, n int)  {
+	newNums := make([]int, m+n)
+	left1, left2 , num , i := 0,0,0, 0
+	for left1 < m || left2 < n {
+		if left1 < m {
+			num = nums1[left1]
+		}
+		if left2 < n {
+			num = min(num, nums2[left2])
+		}
+		newNums[i] = num
+		i++
+	}
+	copy(nums1, newNums)
+	return
+}
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}

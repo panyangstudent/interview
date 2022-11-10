@@ -1,6 +1,6 @@
 package main
 import (
-	"fmt"
+	"sort"
 )
 
 // 思路：先排序
@@ -25,4 +25,24 @@ func merge(intervals [][]int) [][]int {
 		right++
 	}
 	return newIntervals
+}
+func mergeN(intervals [][]int) [][]int {
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+	res := make([][]int, 0)
+	left, right := 0,1
+	res = append(res, intervals[left])
+	for right < len(intervals) {
+		if res[left][1] >= intervals[right][0] {
+			if res[left][1] < intervals[right][1] {
+				res[left][1] = intervals[right][1]
+			}
+		} else {
+			res = append(res, intervals[right])
+			left++
+		}
+		right++
+	}
+	return res
 }

@@ -1,8 +1,7 @@
-package main 
+package main
 
-import (
-	"fmt"
-)
+import "strconv"
+
 // 解题思路：回溯法
 func restoreIpAddresses(s string) []string {
 	if len(s) < 4 || len(s) > 12 {
@@ -10,7 +9,7 @@ func restoreIpAddresses(s string) []string {
 	} 
 	var res ,path []string
 	backTracking(s, path,0, &res)
-
+	return res
 }
 
 func backTracking(s string,path []string,startIndex int,res *[]string){

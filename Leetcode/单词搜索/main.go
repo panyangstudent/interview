@@ -1,9 +1,5 @@
 package main 
 
-import (
-	"fmt"
-)
-
 
 // 经典回溯法
 func exist(board [][]byte, word string) bool {

@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
-// 递归
+
 func subsets(nums []int) (ans [][]int) {
     set := []int{}
     var dfs func(int)
@@ -19,4 +16,24 @@ func subsets(nums []int) (ans [][]int) {
     }
     dfs(0)
     return
+}
+
+func subStr(nums []int) (ans [][]int)  {
+    set := make([]int,0)
+    var def func(int)
+    def = func(cur int) {
+        if cur == len(nums) {
+            ans = append(ans, append([]int(nil),set...))
+            return
+        }
+        //要当前位置
+        set = append(set ,nums[cur])
+        def(cur+1)
+
+        // 不要当前位置
+        set = set[: len(set)-1]
+        def(cur+1)
+    }
+    def(0)
+    return ans
 }

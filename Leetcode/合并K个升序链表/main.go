@@ -1,7 +1,4 @@
 package main
-import (
-	"fmt"
-)
 /*
 给你一个链表数组，每个链表都已经按升序排列。
 
@@ -67,36 +64,4 @@ func merge2list(list1,list2 *ListNode) *ListNode{
 		ans.Next = list1 
 	}
 	return head.Next
-}
-
-
-func mergeKLists(lists []*ListNode) *ListNode {
-	ln := len(lists)
-	if ln == 0 {
-		return nil
-	}
-	if ln == 1 {
-		return lists[0]
-	}
-	// 分而治之
-	return merge2list(mergeKLists(lists[:ln/2]), mergeKLists(lists[ln/2:]))
-}
-
-// 合并两个有序链表
-func merge2list(list1, list2 *ListNode) *ListNode {
-	if list1 == nil {
-		return list2
-	}
-	if list2 == nil {
-		return list1
-	}
-	res := &ListNode{}
-	if list1.Val < list2.Val {
-		res = l1
-		res.Next = merge2list(list1.Next, list2)
-	} else {
-		res = l2
-		res.Next = merge2list(list1, list2.Next)
-	}
-	return res
 }

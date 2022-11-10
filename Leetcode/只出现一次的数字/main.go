@@ -1,7 +1,4 @@
 package main
-import (
-	"fmt"
-)
 
 // 位运算
 func singleNumber(nums []int) int {

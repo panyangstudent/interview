@@ -14,7 +14,7 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 		return l1
 	}
 	var res *ListNode//定义结果节点
-	if l1.Val < l2.value {
+	if l1.Val < l2.Val {
 		res = l1 
 		res.Next = mergeTwoLists(l1.Next, l2)
 	} else {

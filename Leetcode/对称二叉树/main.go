@@ -23,7 +23,7 @@ func check(p, q *TreeNode) bool {
 }
 
 // 迭代
-func isSymmetric(root *TreeNode) bool {
+func isSymmetricN(root *TreeNode) bool {
     u, v := root, root
     q := []*TreeNode{}
     q = append(q, u)

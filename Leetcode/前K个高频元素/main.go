@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"container/heap"
 )
 
 // 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
@@ -41,4 +41,28 @@ func (h *IHeap) Pop() interface{} {
     x := old[n-1]
     *h = old[0 : n-1]
     return x
+}
+
+func topKFrequentN(nums []int, k int) []int {
+	m := make(map[int]int, 0)
+	ret := make([]int, 0)
+	for _, num := range nums {
+		m[num]++
+	}
+	buckets := make([][]int, len(nums)+1)
+	for num, v := range m {
+		if len(buckets[v]) <=0 {
+			buckets[v] = make([]int, 0)
+		}
+		buckets[v] = append(buckets[v], num)
+	}
+	for i:= len(buckets) -1; i>=0;i-- {
+		if len(buckets[i]) > 0 {
+			ret = append(ret, buckets[i]...)
+			if len(ret) >= k {
+				return ret[:k]
+			}
+		}
+	}
+	return  ret
 }

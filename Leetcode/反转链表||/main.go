@@ -1,9 +1,10 @@
 package main
 
-import (
-	"fmt"
-)
-
+// 递归
+type ListNode struct {
+	Val int
+	Next *ListNode
+}
 // 构建一个头节点
 // 根据该节点从前往后推进， 然后反转
 func reverseBetween(head *ListNode, left int, right int) *ListNode {

@@ -1,15 +1,11 @@
 package main
 
-import (
-	"fmt"
-)
-
 func isPalindrome(x int) bool {
 	if x < 0 {
 		return false
 	}
 	temp := 0
-	tempx = x
+	tempx := x
 	for {
 		temp = temp * 10 + x % 10
 		x = x  / 10
