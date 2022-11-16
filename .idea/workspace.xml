@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="dcf75add-8593-461f-8677-d56ecec76320" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/寻找重复数/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/寻找重复数/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/将有序数组转换为二叉搜索树/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/将有序数组转换为二叉搜索树/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/岛屿数量/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/岛屿数量/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/岛屿最大的面积/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/岛屿最大的面积/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/平衡二叉树/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/平衡二叉树/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/括号生成/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/括号生成/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Leetcode/搜索二维矩阵/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/搜索二维矩阵/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/数组中第K大元素/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/数组中第K大元素/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/整数反转/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/整数反转/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leetcode/旋转链表/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Leetcode/旋转链表/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

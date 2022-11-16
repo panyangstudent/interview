@@ -1,5 +1,8 @@
 package main
-
+type ListNode struct {
+	Value int64
+	Next *ListNode
+}
 func rotateRight(head *ListNode, k int) *ListNode {
 	if k == 0 || head == nil || head.Next == nil {
 		return head
@@ -19,7 +22,7 @@ func rotateRight(head *ListNode, k int) *ListNode {
 		iter = iter.Next
 		add--
 	}
-	ret = iter.Next
+	ret := iter.Next
 	iter.Next = nil
 	return ret
 }

@@ -1,8 +1,6 @@
-package main 
+package main
 
-import (
-	"fmt"
-)
+import "math"
 
 func reverse(x int) int {
     rev := 0
