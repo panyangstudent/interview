@@ -1,8 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
 // 	置换，将给定的数组恢复成下面的形式	
 // 	如果数组中含有x ∈ [1,N], 那么恢复之后，数组的第x-1个元素为x
 //	在恢复之后，数组应当有[1,2,3,4,5.....N]的形式，但是其中有若干位置上的数是错误的，每一个错误的位置就代表了一个缺失的正数。以[3, 4, -1, 1]
@@ -23,4 +20,19 @@ func firstMissingPositive(nums []int) int {
         }
     }
     return n + 1
+}
+
+func firstMissingPositiveN(nums []int) int {
+    n := len(nums)
+    for i:=0;i <  n ; i++ {
+        for nums[i] > 0 && nums[i] <= n && nums[nums[i-1]] != nums[i] {
+            nums[nums[i-1]],nums[i] = nums[i], nums[nums[i-1]]
+        }
+    }
+    for i:=0 ;i< n; i++ {
+        if nums[i] != i+1 {
+            return i+1
+        }
+    }
+    return n+1
 }
